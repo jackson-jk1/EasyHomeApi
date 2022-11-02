@@ -23,9 +23,6 @@ services:
     networks:
       - easyhome-net
 
-    depends_on:
-      mysql:
-        condition: service_healthy
 
 
 networks:
