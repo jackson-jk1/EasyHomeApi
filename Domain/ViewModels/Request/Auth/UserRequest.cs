@@ -10,12 +10,23 @@ namespace Domain.Request.Auth
     public class UserRequest  : IValidatableObject
     {
         [JsonProperty("Name")]
+        [Required]
+        [MinLength(10)]
         public string Name { get; set; }
+       
         [JsonProperty("CellPhone")]
+        [Required]
+        [Phone]
         public string CellPhone { get; set; }
+       
         [JsonProperty("Email")]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+       
         [JsonProperty("Password")]
+        [Required]
+        [MinLength(8)]
         public string Password { get; set; }
 
         [JsonProperty("Image")]
