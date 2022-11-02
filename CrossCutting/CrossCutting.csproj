@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	  <ProjectGuid>{3D19659B-3DF9-4192-B5A6-9012B6DBBFBE}</ProjectGuid>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Service\Service.csproj" />
+  </ItemGroup>
+
+</Project>
