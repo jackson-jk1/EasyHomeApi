@@ -1,9 +1,9 @@
 ﻿using Data.Context;
 using Data.Repository;
-using Domain.Entities.Logs;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Service.Logs;
 using Service.Interfaces;
 using Service.Services;
 
