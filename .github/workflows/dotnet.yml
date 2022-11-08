@@ -35,9 +35,6 @@ jobs:
       id: github-pull-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Automatic Tagging of Releases
-      id: increment-git-tag
-
     - name: Build, Tag, and Push the Image to Amazon ECR
       id: build-image
       env:
