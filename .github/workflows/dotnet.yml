@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-adn-push:
-    - name: Build .net and Push to ECR
+    name: Build .net and Push to ECR
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
