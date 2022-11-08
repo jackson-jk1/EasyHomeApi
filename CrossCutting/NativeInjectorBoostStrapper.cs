@@ -3,12 +3,11 @@ using Data.Repository;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Service.Logs;
 using Service.Interfaces;
 using Service.Services;
 
 namespace CrossCutting
-    
+
 {
     public static class NativeInjectorBoostStrapper 
     {

@@ -1,29 +1,32 @@
 version: '3.7'
-
 services:
 
-  mysql:
-    platform: linux/x86_64
-    image: mysql
-    restart: always
+  easyhome-app:
+    build: .
+    ports: 
+     - "8000:80"
+     - "5001:443"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: tcc2
-    ports:
-      - 3307:3306
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_Kestrel__Certificates__Default__Password}
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=${ASPNETCORE_Kestrel__Certificates__Default__Path}
+      - SERVER=${SERVER}
+      - PORT=${PORT}
+      - DATABASE=${DATABASE}
+      - USERNAME=${USERNAME}
+      - PASSWORD=${PASSWORD}
+      - Key=${Key}
+      - SendGridKey=${SendGridKey}
+ 
+    volumes:
+      - ./conf.d/https/:/https/
+
+
     networks:
       - easyhome-net
 
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-
-    
-    networks:
-      - easyhome-net
-
-
+       
 
 networks:
   easyhome-net:

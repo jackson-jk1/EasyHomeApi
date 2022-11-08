@@ -3,6 +3,7 @@ using Application.Configurations;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Application.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,12 +17,14 @@ builder.Services.AddAutoMapperConfiguration();
 
 builder.Services.AddDbContext<MySqlContext>(options =>
 {
-    var server = builder.Configuration["Database:mysql:server"];
-    var port = builder.Configuration["Database:mysql:port"];
-    var Database = builder.Configuration["Database:mysql:database"];
-    var username = builder.Configuration["Database:mysql:username"];
-    var password = builder.Configuration["Database:mysql:password"];
+    var server = builder.Configuration["SERVER"];
+    Console.WriteLine(server);
+    var port = builder.Configuration["PORT"];
+    var Database = builder.Configuration["DATABASE"];
+    var username = builder.Configuration["USERNAME"];
+    var password = builder.Configuration["PASSWORD"];
     var ConectionString = $"Server={server};Port={port};Database={Database};Uid={username};Pwd={password}";
+    Console.WriteLine(ConectionString);
 
     options.UseMySql(ConectionString, ServerVersion.AutoDetect(ConectionString), opt =>
     {
@@ -78,5 +81,15 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-app.Run();
+    var context = services.GetRequiredService<MySqlContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
+
+app.Run("https://*:80");
