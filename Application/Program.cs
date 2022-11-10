@@ -28,11 +28,11 @@ builder.Services.AddDbContext<MySqlContext>(options =>
     var ConectionString = $"Server={server};Port={port};Database={Database};Uid={username};Pwd={password}";
     Console.WriteLine(ConectionString);
 
-    /*options.UseMySql(ConectionString, ServerVersion.AutoDetect(ConectionString), opt =>
+    options.UseMySql(ConectionString, ServerVersion.AutoDetect(ConectionString), opt =>
     {
         opt.CommandTimeout(180);
    
-    });*/
+    });
 });
 
 
@@ -63,27 +63,20 @@ builder.Configuration.AddJsonFile("appsettings.json");
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
 
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-
-//app.UseMiddleware<HandlingMiddleware>();
+app.UseMiddleware<HandlingMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
 
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseHttpsRedirection();
-
 app.MapControllers();
 
-/*using (var scope = app.Services.CreateScope())
+ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
@@ -92,6 +85,6 @@ app.MapControllers();
     {
         context.Database.Migrate();
     }
-}*/
+}
 
-app.Run("https://*:80");
+app.Run("http://*:80");
