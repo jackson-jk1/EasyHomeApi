@@ -28,9 +28,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{817AEFB5-C7C5-418B-8801-C108D2DACDC0}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
-		docker-compose.yml = docker-compose.yml
 		.env = .env
+		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
 Global

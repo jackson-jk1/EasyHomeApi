@@ -14,7 +14,7 @@ services:
       - SERVER=${SERVER}
       - PORT=${PORT}
       - DATABASE=${DATABASE}
-      - USERNAME=${USERNAME}
+      - USERNAME=root
       - PASSWORD=${PASSWORD}
       - Key=${Key}
       - SendGridKey=${SendGridKey}
@@ -26,8 +26,7 @@ services:
     networks:
       - easyhome-net
 
-       
-
+  
 networks:
   easyhome-net:
     driver: bridge

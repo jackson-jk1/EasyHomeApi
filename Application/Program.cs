@@ -22,15 +22,17 @@ builder.Services.AddDbContext<MySqlContext>(options =>
     var port = builder.Configuration["PORT"];
     var Database = builder.Configuration["DATABASE"];
     var username = builder.Configuration["USERNAME"];
+    Console.WriteLine(username);
+
     var password = builder.Configuration["PASSWORD"];
     var ConectionString = $"Server={server};Port={port};Database={Database};Uid={username};Pwd={password}";
     Console.WriteLine(ConectionString);
 
-    options.UseMySql(ConectionString, ServerVersion.AutoDetect(ConectionString), opt =>
+    /*options.UseMySql(ConectionString, ServerVersion.AutoDetect(ConectionString), opt =>
     {
         opt.CommandTimeout(180);
    
-    });
+    });*/
 });
 
 
@@ -81,7 +83,7 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
@@ -90,6 +92,6 @@ using (var scope = app.Services.CreateScope())
     {
         context.Database.Migrate();
     }
-}
+}*/
 
 app.Run("https://*:80");
