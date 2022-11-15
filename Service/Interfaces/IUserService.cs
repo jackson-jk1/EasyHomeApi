@@ -15,6 +15,7 @@ namespace Service.Interfaces
         Task<Result<GenericResponse>> Update(HttpContext context, UserRequest user);
         Task<Result<GenericResponse>> UpdatePassword(HttpContext context, PasswordRequest pass);
         Task<Result<GenericResponse>> Recover(string email);
+        Task<Result<UserModel>> GetByToken(HttpContext context);
         Task<Result<UserModel>> GetById(int id);
     }
 }

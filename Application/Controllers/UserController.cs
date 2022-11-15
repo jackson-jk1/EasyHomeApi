@@ -30,6 +30,7 @@ namespace Application.Controllers
             _stopwatch.Start();
             if (!ModelState.IsValid)
             {
+
                 return FromResult(ModelState);
             }
             return FromResult(await _userService.Register(user));
@@ -87,6 +88,18 @@ namespace Application.Controllers
                 return FromResult(ModelState);
             }
             return FromResult(await _userService.Auth(login));
+
+        }
+        [AllowAnonymous]
+        [HttpGet("v1/user/")]
+        public async Task<IActionResult> GetUser([FromBody] LoginRequest login)
+        {
+            _stopwatch.Start();
+            if (!ModelState.IsValid)
+            {
+                return FromResult(ModelState);
+            }
+            return FromResult(await _userService.GetByToken(HttpContext));
 
         }
 
