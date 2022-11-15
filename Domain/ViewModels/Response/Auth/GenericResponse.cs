@@ -11,5 +11,9 @@ namespace Domain.ViewModels.Response.Auth
     {
         [JsonPropertyName("Response")]
         public string Response { get; set; }
+
+        [JsonPropertyName("Statuscode")]
+
+        public int Statuscode { get; set; }
     }
 }

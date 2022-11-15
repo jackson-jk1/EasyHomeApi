@@ -87,15 +87,15 @@ namespace Service.Services
                 {
 
                     LogMessage = "ok",
-                    Data = new GenericResponse { Response = "Senha Atualizada com sucesso" }
+                    Data = new GenericResponse { Response = "Senha Atualizada com sucesso", Statuscode = 200 }
 
                 };
             }
-            return new CustomResult<GenericResponse>(200)
+            return new CustomResult<GenericResponse>(400)
             {
 
                 LogMessage = "ok",
-                Data = new GenericResponse { Response = "Não foi possivel atualizar a senha" }
+                Data = new GenericResponse { Response = "Não foi possivel atualizar a senha", Statuscode = 400 }
 
             };
 
@@ -119,7 +119,8 @@ namespace Service.Services
                 LogMessage = "ok",
                 Data = new GenericResponse
                 {
-                    Response = "Atualizado com sucesso"
+                    Response = "Atualizado com sucesso" ,
+                    Statuscode = 200
                 }
 
             };
@@ -146,7 +147,8 @@ namespace Service.Services
                     LogMessage = "Enviamos enviado",
                     Data = new GenericResponse
                     {
-                        Response = "Enviamos um email para sua conta"
+                        Response = "Enviamos um email para sua conta",
+                        Statuscode = 200
                     }
                 };
             }
@@ -156,7 +158,8 @@ namespace Service.Services
                 LogMessage = "Email não encontrado na base de dados",
                 Data = new GenericResponse
                 {
-                    Response = "Email não encontrado na base de dados"
+                    Response = "Email não encontrado na base de dados",
+                    Statuscode = 401
                 }
 
             };
