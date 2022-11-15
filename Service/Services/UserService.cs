@@ -70,7 +70,7 @@ namespace Service.Services
             {
 
                 LogMessage = "ok",
-                Data = new GenericResponse { Response = "Registrado com sucesso"}
+                Data = new GenericResponse { Response = "Registrado com sucesso", Statuscode = 200 }
 
 
             };
