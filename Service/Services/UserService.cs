@@ -42,7 +42,15 @@ namespace Service.Services
         public async Task<Result<LoginResponse>> Auth(LoginRequest user)
         {
             var userJwt = _baseRepository.Auth(user.Email);
-            if (!userJwt.Equals(default) && userJwt.Password == EncryptHelper.Encrypt(user.Password))
+            if (userJwt == null)
+            {
+                return new CustomResult<LoginResponse>(401)
+                {
+                    LogMessage = "não autorizado",
+                    Data = new LoginResponse { Token = "" }
+                };
+            }
+            if (userJwt.Password == EncryptHelper.Encrypt(user.Password))
                 return new CustomResult<LoginResponse>(200){
                     LogMessage = "Autentificado",
                     Data = new LoginResponse
@@ -129,6 +137,20 @@ namespace Service.Services
         public async Task<Result<GenericResponse>> Recover(string email)
         {
             var userJwt = _baseRepository.Auth(email);
+            if (userJwt == null)
+            {
+                return new CustomResult<GenericResponse>(401)
+                {
+
+                    LogMessage = "Email não encontrado na base de dados",
+                    Data = new GenericResponse
+                    {
+                        Response = "Email não encontrado na base de dados",
+                        Statuscode = 401
+                    }
+
+                };
+            }
             if (!userJwt.Equals(default))
             {
                 string caracteres = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789!@$?_-";
