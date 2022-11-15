@@ -100,6 +100,7 @@ namespace Service.Services
             };
 
         }
+ 
         public async Task<Result<GenericResponse>> Update(HttpContext context, UserRequest userreq)
         {
             var user = (UserModel)context.Items["User"];
@@ -175,5 +176,29 @@ namespace Service.Services
             };
           
          }
+
+        public async Task<Result<UserModel>> GetByToken(HttpContext context)
+        {
+            var user = (UserModel)context.Items["User"];
+
+            if (user == null)
+            {
+              return  new CustomResult<UserModel>(401)
+                {
+
+                    LogMessage = "ok",
+                    Data = null
+
+                };
+            }
+            return new CustomResult<UserModel>(401)
+                {
+
+                    LogMessage = "ok",
+                    Data = user
+
+                };
+
+        }
     }
 }
