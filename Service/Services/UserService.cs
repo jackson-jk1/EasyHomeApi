@@ -8,6 +8,8 @@ using Domain.ViewModels.Response.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SendGrid;
 using Service.Helpers;
 using Service.Interfaces;
 using System;
@@ -56,7 +58,7 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<string>> Register(UserRequest userreq)
+        public async Task<Result<GenericResponse>> Register(UserRequest userreq)
         {
             
             string nomeUnicoArquivo = ImageHelper.UploadedFile(userreq.Image, _appEnvironment.WebRootPath);
@@ -64,40 +66,41 @@ namespace Service.Services
             user.Image = nomeUnicoArquivo;
             user.Password = EncryptHelper.Encrypt(userreq.Password);
             _baseRepository.Insert(user);
-            return new CustomResult<string>(200)
+            return new CustomResult<GenericResponse>(200)
             {
-  
+
                 LogMessage = "ok",
-                Data = "Registrado com sucesso"
-                
+                Data = new GenericResponse { Response = "Registrado com sucesso"}
+
+
             };
         }
 
-        public async Task<Result<string>> UpdatePassword(HttpContext context, PasswordRequest passreq)
+        public async Task<Result<GenericResponse>> UpdatePassword(HttpContext context, PasswordRequest passreq)
         {
             var user = (UserModel)context.Items["User"];
             if (user.Password == EncryptHelper.Encrypt(passreq.PasswordNew))
             {
                 user.Password = EncryptHelper.Encrypt(passreq.PasswordNew);
                 _baseRepository.Update(user);
-                return new CustomResult<string>(200)
+                return new CustomResult<GenericResponse>(200)
                 {
 
                     LogMessage = "ok",
-                    Data = "Senha Atualizada com sucesso"
+                    Data = new GenericResponse { Response = "Senha Atualizada com sucesso" }
 
                 };
             }
-            return new CustomResult<string>(200)
+            return new CustomResult<GenericResponse>(200)
             {
 
                 LogMessage = "ok",
-                Data = "Não foi possivel atualizar a senha"
+                Data = new GenericResponse { Response = "Não foi possivel atualizar a senha" }
 
             };
 
         }
-        public async Task<Result<string>> Update(HttpContext context, UserRequest userreq)
+        public async Task<Result<GenericResponse>> Update(HttpContext context, UserRequest userreq)
         {
             var user = (UserModel)context.Items["User"];
             string nomeUnicoArquivo = ImageHelper.UploadedFile(userreq.Image, _appEnvironment.WebRootPath);
@@ -110,16 +113,19 @@ namespace Service.Services
             user.CellPhone = userreq.CellPhone;
             user.Name = userreq.Name;
             _baseRepository.Update(user);
-            return new CustomResult<string>(200)
+            return new CustomResult<GenericResponse>(200)
             {
 
                 LogMessage = "ok",
-                Data = "Atualizado com sucesso"
+                Data = new GenericResponse
+                {
+                    Response = "Atualizado com sucesso"
+                }
 
             };
         }
 
-        public async Task<Result<string>> Recover(string email)
+        public async Task<Result<GenericResponse>> Recover(string email)
         {
             var userJwt = _baseRepository.Auth(email);
             if (!userJwt.Equals(default))
@@ -135,17 +141,23 @@ namespace Service.Services
                 userJwt.Password = EncryptHelper.Encrypt(password);
                 _baseRepository.Update(userJwt);
                 SendGridHelper.Send(userJwt,password);
-                return new CustomResult<string>(200)
+                return new CustomResult<GenericResponse>(200)
                 {
                     LogMessage = "Enviamos enviado",
-                    Data = "Enviamos um email para sua conta"
+                    Data = new GenericResponse
+                    {
+                        Response = "Enviamos um email para sua conta"
+                    }
                 };
             }
-            return new CustomResult<string>(401)
+            return new CustomResult<GenericResponse>(401)
             {
 
                 LogMessage = "Email não encontrado na base de dados",
-                Data = "Email não encontrado na base de dados"
+                Data = new GenericResponse
+                {
+                    Response = "Email não encontrado na base de dados"
+                }
 
             };
         }
