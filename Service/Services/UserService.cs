@@ -213,7 +213,7 @@ namespace Service.Services
 
                 };
             }
-            return new CustomResult<UserModel>(401)
+            return new CustomResult<UserModel>(200)
                 {
 
                     LogMessage = "ok",

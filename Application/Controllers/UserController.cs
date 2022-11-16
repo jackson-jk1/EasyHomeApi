@@ -90,9 +90,9 @@ namespace Application.Controllers
             return FromResult(await _userService.Auth(login));
 
         }
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("v1/user/")]
-        public async Task<IActionResult> GetUser([FromBody] LoginRequest login)
+        public async Task<IActionResult> GetUser()
         {
             _stopwatch.Start();
             if (!ModelState.IsValid)
