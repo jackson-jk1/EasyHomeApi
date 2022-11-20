@@ -43,7 +43,7 @@ namespace Application.Controllers
         public async Task<IActionResult> Update([FromForm] UserRequest user)
         {
             _stopwatch.Start();
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && user.Image != null)
             {
                 return FromResult(ModelState);
             }

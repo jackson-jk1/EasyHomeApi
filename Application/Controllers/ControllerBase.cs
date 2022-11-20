@@ -40,7 +40,7 @@ namespace Application.Controllers
             })).ToList();
             CustomResult<ErroValidation> result = new CustomResult<ErroValidation>(403)
             {
-                Data = new ErroValidation { ListErrors = listaErros, MessageErro = "erro de validação"}
+                Data = new ErroValidation { ListErrors = listaErros, MessageErro = "Erro de validação"}
             };
             return FromResult(result);
         }
