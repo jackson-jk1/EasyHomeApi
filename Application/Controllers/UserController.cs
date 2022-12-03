@@ -95,10 +95,6 @@ namespace Application.Controllers
         public async Task<IActionResult> GetUser()
         {
             _stopwatch.Start();
-            if (!ModelState.IsValid)
-            {
-                return FromResult(ModelState);
-            }
             return FromResult(await _userService.GetByToken(HttpContext));
 
         }

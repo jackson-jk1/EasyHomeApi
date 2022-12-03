@@ -188,24 +188,24 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<UserModel>> GetById(int id)
+        public async Task<Result<UserResponse>> GetById(int id)
          {
-            return new CustomResult<UserModel>(200) {
+            return new CustomResult<UserResponse>(200) {
                
                 LogMessage = "ok",
-                Data = _baseRepository.Select(id) 
+                Data = _mapper.Map<UserResponse>(_baseRepository.Select(id)) 
 
             };
           
          }
 
-        public async Task<Result<UserModel>> GetByToken(HttpContext context)
+        public async Task<Result<UserResponse>> GetByToken(HttpContext context)
         {
             var user = (UserModel)context.Items["User"];
 
             if (user == null)
             {
-              return  new CustomResult<UserModel>(401)
+              return  new CustomResult<UserResponse>(401)
                 {
 
                     LogMessage = "ok",
@@ -213,11 +213,11 @@ namespace Service.Services
 
                 };
             }
-            return new CustomResult<UserModel>(200)
+            return new CustomResult<UserResponse>(200)
                 {
 
                     LogMessage = "ok",
-                    Data = user
+                    Data = _mapper.Map<UserResponse>(user)
 
                 };
 

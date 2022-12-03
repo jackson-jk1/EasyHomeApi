@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Service.Interfaces
 {
-    internal class IImmobileService
+    public interface IImmobileService : IDisposable
+    
     {
     }
 }

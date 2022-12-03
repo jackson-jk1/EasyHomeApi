@@ -18,10 +18,14 @@ namespace CrossCutting
 
             //////////////////////  instancias de repository //////////////////////   
             service.AddScoped<IBaseRepository<UserModel>, BaseRepository<UserModel>>();
+            service.AddScoped<IBaseRepository<PoloModel>, BaseRepository<PoloModel>>();
+            service.AddScoped<IBaseRepository<ImmobileModel>, BaseRepository<ImmobileModel>>();
             service.AddScoped<IUserRepository, UserRepository>();
 
             //////////////////////  instancias de service //////////////////////   
             service.AddScoped<IUserService, UserService>();
+            service.AddScoped<IImmobileService, ImmobileService>();
+            service.AddScoped<IFiltrosService, FiltrosService>();
 
             //////////////////////  instancias de contexto //////////////////////   
             service.AddScoped<MySqlContext>();

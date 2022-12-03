@@ -2,6 +2,7 @@
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    partial class MySqlContextModelSnapshot : ModelSnapshot
+    [Migration("20221203172443_ImobbileUpdate")]
+    partial class ImobbileUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,10 +64,6 @@ namespace Data.Migrations
                         .HasColumnType("varchar(300)")
                         .HasColumnName("Address");
 
-                    b.Property<int>("BairroId")
-                        .HasColumnType("int")
-                        .HasColumnName("bairroId");
-
                     b.Property<string>("Desc")
                         .IsRequired()
                         .HasColumnType("varchar(3000)")
@@ -74,7 +72,7 @@ namespace Data.Migrations
                     b.Property<string>("ExternalId")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
-                        .HasColumnName("externalId");
+                        .HasColumnName("ExternalId");
 
                     b.Property<string>("Images")
                         .IsRequired()
@@ -99,8 +97,6 @@ namespace Data.Migrations
                         .HasColumnName("Title");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BairroId");
 
                     b.ToTable("Immobile", (string)null);
                 });
@@ -191,17 +187,6 @@ namespace Data.Migrations
                     b.Navigation("Bairro");
 
                     b.Navigation("Polo");
-                });
-
-            modelBuilder.Entity("Domain.Models.ImmobileModel", b =>
-                {
-                    b.HasOne("Domain.Models.BairroModel", "Bairro")
-                        .WithMany()
-                        .HasForeignKey("BairroId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bairro");
                 });
 
             modelBuilder.Entity("Domain.Models.UserPreferenceModel", b =>

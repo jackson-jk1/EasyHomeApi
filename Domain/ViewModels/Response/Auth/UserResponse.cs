@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -21,5 +23,10 @@ namespace Domain.ViewModels.Response.Auth
 
         [JsonPropertyName("Image")]
         public string Image { get; set; }
+
+        [NotMapped]
+        [JsonPropertyName("Favoritos")]
+        public virtual ICollection<UserPreferenceModel> UserPreferences { get; set; }
+
     }
 }

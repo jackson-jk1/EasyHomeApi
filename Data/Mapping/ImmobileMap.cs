@@ -13,6 +13,12 @@ namespace Data.Mapping
 
             builder.HasKey(prop => prop.Id);
 
+            builder.Property(prop => prop.ExternalId)
+                .HasConversion(prop => prop.ToString(), prop => prop)
+                .IsRequired()
+                .HasColumnName("externalId")
+                .HasColumnType("varchar(200)");
+
             builder.Property(prop => prop.Title)
                 .HasConversion(prop => prop.ToString(), prop => prop)
                 .IsRequired()
@@ -29,7 +35,7 @@ namespace Data.Mapping
                 .HasConversion(prop => prop.ToString(), prop => prop)
                 .IsRequired()
                 .HasColumnName("Desc")
-                .HasColumnType("varchar(300)");
+                .HasColumnType("varchar(3000)");
 
             builder.Property(prop => prop.Map)
                .HasConversion(prop => prop.ToString(), prop => prop)
@@ -37,6 +43,9 @@ namespace Data.Mapping
                .HasColumnName("Map")
                .HasColumnType("varchar(300)");
 
+            builder.Property(u => u.BairroId)
+                .IsRequired()
+                .HasColumnName("bairroId");
 
             builder.Property(prop => prop.Price)
                 .IsRequired()
