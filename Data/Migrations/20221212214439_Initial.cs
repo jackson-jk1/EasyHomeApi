@@ -5,38 +5,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class PoloTable : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Bairro",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bairro", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Polo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Polo", x => x.Id);
-                })
+            migrationBuilder.AlterDatabase()
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -64,10 +37,21 @@ namespace Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+
             migrationBuilder.CreateIndex(
                 name: "IX_BairrosPolo_bairroId",
                 table: "BairrosPolo",
                 column: "bairroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Immobile_bairroId",
+                table: "Immobile",
+                column: "bairroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPreference_immobileId",
+                table: "UserPreference",
+                column: "immobileId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -76,10 +60,19 @@ namespace Data.Migrations
                 name: "BairrosPolo");
 
             migrationBuilder.DropTable(
-                name: "Bairro");
+                name: "UserPreference");
 
             migrationBuilder.DropTable(
                 name: "Polo");
+
+            migrationBuilder.DropTable(
+                name: "Immobile");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Bairro");
         }
     }
 }

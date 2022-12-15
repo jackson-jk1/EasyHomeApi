@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using Service.Helpers;
 using Domain.ViewModels.Request;
+using Service.Services;
 
 namespace Application.Controllers
 {
@@ -96,6 +97,36 @@ namespace Application.Controllers
         {
             _stopwatch.Start();
             return FromResult(await _userService.GetByToken(HttpContext));
+
+        }
+
+        [Authorize]
+        [HttpGet("v1/user/preference/{id}")]
+        public async Task<IActionResult> GetImmobiles(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.checkImmobile(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
+        [Authorize]
+        [HttpPost("v1/user/addPreference/{id}")]
+        public async Task<IActionResult> addPreference(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.addFavorite(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
+        [Authorize]
+        [HttpDelete("v1/user/removePreference/{id}")]
+        public async Task<IActionResult> removePreference(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.removeFavorite(HttpContext, id);
+            return Json(new { data = data.Data });
 
         }
 

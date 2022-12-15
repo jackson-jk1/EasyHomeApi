@@ -11,5 +11,7 @@ namespace Domain.ViewModels.Response.Auth
     {
         [JsonPropertyName("Token")]
         public string Token { get; set; }
+
+        public UserResponse User { get; set; }
     }
 }

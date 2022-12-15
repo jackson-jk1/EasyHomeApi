@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20221031183330_FifithMigration")]
-    partial class FifithMigration
+    [Migration("20221212214439_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,39 @@ namespace Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Domain.Models.BairroModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bairro", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Models.BairrosPoloModel", b =>
+                {
+                    b.Property<int>("PoloId")
+                        .HasColumnType("int")
+                        .HasColumnName("poloId");
+
+                    b.Property<int>("BairroId")
+                        .HasColumnType("int")
+                        .HasColumnName("bairroId");
+
+                    b.HasKey("PoloId", "BairroId");
+
+                    b.HasIndex("BairroId");
+
+                    b.ToTable("BairrosPolo", (string)null);
+                });
 
             modelBuilder.Entity("Domain.Models.ImmobileModel", b =>
                 {
@@ -31,10 +64,19 @@ namespace Data.Migrations
                         .HasColumnType("varchar(300)")
                         .HasColumnName("Address");
 
+                    b.Property<int>("BairroId")
+                        .HasColumnType("int")
+                        .HasColumnName("bairroId");
+
                     b.Property<string>("Desc")
                         .IsRequired()
-                        .HasColumnType("varchar(300)")
+                        .HasColumnType("varchar(3000)")
                         .HasColumnName("Desc");
+
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("externalId");
 
                     b.Property<string>("Images")
                         .IsRequired()
@@ -60,7 +102,25 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BairroId");
+
                     b.ToTable("Immobile", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Models.PoloModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Polo", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.UserModel", b =>
@@ -116,6 +176,36 @@ namespace Data.Migrations
                     b.ToTable("UserPreference", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Models.BairrosPoloModel", b =>
+                {
+                    b.HasOne("Domain.Models.BairroModel", "Bairro")
+                        .WithMany("BairrosPolo")
+                        .HasForeignKey("BairroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.PoloModel", "Polo")
+                        .WithMany("BairrosPolo")
+                        .HasForeignKey("PoloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bairro");
+
+                    b.Navigation("Polo");
+                });
+
+            modelBuilder.Entity("Domain.Models.ImmobileModel", b =>
+                {
+                    b.HasOne("Domain.Models.BairroModel", "Bairro")
+                        .WithMany()
+                        .HasForeignKey("BairroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bairro");
+                });
+
             modelBuilder.Entity("Domain.Models.UserPreferenceModel", b =>
                 {
                     b.HasOne("Domain.Models.ImmobileModel", "Immobile")
@@ -135,9 +225,19 @@ namespace Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Models.BairroModel", b =>
+                {
+                    b.Navigation("BairrosPolo");
+                });
+
             modelBuilder.Entity("Domain.Models.ImmobileModel", b =>
                 {
                     b.Navigation("UserPreferences");
+                });
+
+            modelBuilder.Entity("Domain.Models.PoloModel", b =>
+                {
+                    b.Navigation("BairrosPolo");
                 });
 
             modelBuilder.Entity("Domain.Models.UserModel", b =>

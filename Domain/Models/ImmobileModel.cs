@@ -21,9 +21,6 @@ namespace Domain.Models
 
         public int BairroId { get; set; }
         public BairroModel Bairro { get; set; }
-
-        [NotMapped]
-        public virtual List<string> Imgs { get; set; }
         public string Map { get; set; }
 
         [NotMapped]

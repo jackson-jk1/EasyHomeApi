@@ -24,7 +24,6 @@ namespace Domain.ViewModels.Response.Auth
         [JsonPropertyName("Image")]
         public string Image { get; set; }
 
-        [NotMapped]
         [JsonPropertyName("Favoritos")]
         public virtual ICollection<UserPreferenceModel> UserPreferences { get; set; }
 

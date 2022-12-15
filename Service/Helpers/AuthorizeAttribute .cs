@@ -10,7 +10,8 @@ namespace Service.Helpers
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var user = (UserModel)context.HttpContext.Items["User"];
+
+            var user = context.HttpContext.Items["User"];
             if (user == null)
             {
                 // not logged in

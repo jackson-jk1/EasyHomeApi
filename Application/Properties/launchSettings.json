@@ -9,7 +9,7 @@
         "SendGridKey": "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"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7265;http://localhost:5265"
+      "applicationUrl": "https://localhost:7265/;http://localhost:5265"
     },
     "IIS Express": {
       "commandName": "IISExpress",

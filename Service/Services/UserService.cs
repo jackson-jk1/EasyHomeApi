@@ -86,7 +86,7 @@ namespace Service.Services
 
         public async Task<Result<GenericResponse>> UpdatePassword(HttpContext context, PasswordRequest passreq)
         {
-            var user = (UserModel)context.Items["User"];
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
             if (user.Password == EncryptHelper.Encrypt(passreq.PasswordNew))
             {
                 user.Password = EncryptHelper.Encrypt(passreq.PasswordNew);
@@ -111,7 +111,7 @@ namespace Service.Services
  
         public async Task<Result<GenericResponse>> Update(HttpContext context, UserRequest userreq)
         {
-            var user = (UserModel)context.Items["User"];
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
             string nomeUnicoArquivo = ImageHelper.UploadedFile(userreq.Image, _appEnvironment.WebRootPath);
             if (nomeUnicoArquivo != null)
             {
@@ -201,7 +201,7 @@ namespace Service.Services
 
         public async Task<Result<UserResponse>> GetByToken(HttpContext context)
         {
-            var user = (UserModel)context.Items["User"];
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
 
             if (user == null)
             {
@@ -217,9 +217,94 @@ namespace Service.Services
                 {
 
                     LogMessage = "ok",
-                    Data = _mapper.Map<UserResponse>(user)
+                    Data = _mapper.Map<UserResponse>(_baseRepository.Select(user.Id))
+
+            };
+
+        }
+
+        public async Task<Result<bool>> checkImmobile(HttpContext context, int immId)
+        {
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
+
+            return new CustomResult<bool>(200)
+            {
+
+                LogMessage = "",
+                Data = _baseRepository.CheckImmobil(user.Id, immId),
+             
+            };
+        }
+
+        public async Task<Result<GenericResponse>> addFavorite(HttpContext context, int immId)
+        {
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
+
+            try
+            {
+                _baseRepository.AddFavorite(user.Id, immId);
+                return new CustomResult<GenericResponse>(200)
+                {
+
+                    LogMessage = "",
+                    Data = new GenericResponse
+                    {
+                        Response = "Adicionado com sucesso",
+                        Statuscode = 401
+                    }
 
                 };
+            }
+            catch (Exception e)
+            {
+                return new CustomResult<GenericResponse>(200)
+                {
+
+                    LogMessage = "",
+                    Data = new GenericResponse
+                    {
+                        Response = "Não foi possivel adicional o imovel",
+                        Statuscode = 401
+                    }
+
+                };
+            }
+
+        }
+
+        public async Task<Result<GenericResponse>> removeFavorite(HttpContext context, int immId)
+        {
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
+
+            try
+            {
+                _baseRepository.removeFavorite(user.Id, immId);
+                return new CustomResult<GenericResponse>(200)
+                {
+
+                    LogMessage = "",
+                    Data = new GenericResponse
+                    {
+                        Response = "Adicionado com sucesso",
+                        Statuscode = 401
+                    }
+
+                };
+            }
+            catch (Exception e)
+            {
+                return new CustomResult<GenericResponse>(200)
+                {
+
+                    LogMessage = "",
+                    Data = new GenericResponse
+                    {
+                        Response = "Não foi possivel adicional o imovel",
+                        Statuscode = 401
+                    }
+
+                };
+            }
 
         }
     }

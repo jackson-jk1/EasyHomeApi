@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using Domain.Request.Auth;
+using Domain.ViewModels.Response;
 using Domain.ViewModels.Response.Auth;
 using Domain.ViewModels.Response.Filtros;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+
 
 namespace Service.AutoMapper
 {
@@ -31,6 +28,22 @@ namespace Service.AutoMapper
                 Name = model.Name
 
             }) ;
+
+            CreateMap<ImmobileModel, ImmobileResponse>().ConstructUsing(model => new ImmobileResponse
+            {
+                Id = model.Id,
+                Desc = model.Desc,
+                Price = model.Price,
+                Rooms = model.Rooms,
+                Address = model.Address,
+                Bairro = model.Bairro,
+                Title = model.Title,
+                Map = model.Map,
+                UserPreferences = model.UserPreferences,
+               
+
+            }) ; 
+           
         }
     }
 }

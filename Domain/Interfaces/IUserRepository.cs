@@ -10,5 +10,11 @@ namespace Domain.Interfaces
     public interface IUserRepository : IBaseRepository<UserModel>
     {
         public UserModel Auth(string email);
+
+        public bool CheckImmobil(int userId, int immId);
+
+        public void AddFavorite(int idUser, int idImm);
+
+        public void removeFavorite(int idUser, int idImm);
     }
 }

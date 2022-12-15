@@ -2,15 +2,9 @@
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Utils.Result;
-using Domain.ViewModels.Response.Auth;
 using Domain.ViewModels.Response.Filtros;
 using Microsoft.AspNetCore.Hosting;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Services
 {

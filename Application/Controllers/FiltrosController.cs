@@ -19,7 +19,8 @@ namespace Application.Controllers
         public async Task<IActionResult> GetAll()
         {
             _stopwatch.Start();
-            return FromResult(await _filtrosService.GetAllPolos());
+            var data = await _filtrosService.GetAllPolos();
+            return Json(new { data = data.Data});
 
         }
     }

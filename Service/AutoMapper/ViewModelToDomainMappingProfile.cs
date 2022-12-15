@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Models;
 using Domain.Request.Auth;
+using Domain.ViewModels.Response.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,16 @@ namespace Service.AutoMapper
                 Name = itemRequest.Name,    
                 Email = itemRequest.Email,
                 CellPhone =  itemRequest.CellPhone, 
+            });
+
+            CreateMap<UserResponse, UserModel>().ConstructUsing(itemRequest => new UserModel
+            {
+                Id = itemRequest.Id,
+                Name = itemRequest.Name,
+                Email = itemRequest.Email,
+                CellPhone = itemRequest.CellPhone,
+                Image = itemRequest.Image,
+                
             });
         }
     }
