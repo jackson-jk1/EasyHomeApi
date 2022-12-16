@@ -16,5 +16,7 @@ namespace Domain.Interfaces
         public void AddFavorite(int idUser, int idImm);
 
         public void removeFavorite(int idUser, int idImm);
+
+        public List<UserModel> getUsersByImmobile(int userId, int immId);
     }
 }

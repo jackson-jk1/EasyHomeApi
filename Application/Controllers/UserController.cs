@@ -130,5 +130,15 @@ namespace Application.Controllers
 
         }
 
+        [Authorize]
+        [HttpGet("v1/user/getByImm/{id}")]
+        public async Task<IActionResult> getUsersByImmobile(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.getUsersByImmobile(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
     }
 }

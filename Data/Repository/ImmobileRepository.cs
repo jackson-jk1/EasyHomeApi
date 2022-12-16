@@ -2,9 +2,11 @@
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.ViewModels.Request;
+using Domain.ViewModels.Response.Auth;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using System.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Data.Repository
 {
@@ -39,5 +41,6 @@ namespace Data.Repository
 
             return _mySqlContext.Set<ImmobileModel>().ToList();
         }
+
     }
 }

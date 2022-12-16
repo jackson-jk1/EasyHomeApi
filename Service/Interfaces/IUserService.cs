@@ -20,5 +20,6 @@ namespace Service.Interfaces
         Task<Result<UserResponse>> GetById(int id);
         Task<Result<GenericResponse>> addFavorite(HttpContext context, int immId);
         Task<Result<GenericResponse>> removeFavorite(HttpContext context, int immId);
+        Task<Result<List<UserResponse>>> getUsersByImmobile(HttpContext context, int immId);
     }
 }

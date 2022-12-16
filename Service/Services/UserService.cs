@@ -198,6 +198,35 @@ namespace Service.Services
             };
           
          }
+        public async Task<Result<List<UserResponse>>> getUsersByImmobile(HttpContext context, int immId)
+        {
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
+
+            if (user == null)
+            {
+                return new CustomResult<List<UserResponse>>(401)
+                {
+
+                    LogMessage = "ok",
+                    Data = new List<UserResponse>()
+
+                };
+            }
+            var response = _baseRepository.getUsersByImmobile(user.Id, immId);
+            List<UserResponse> users = new List<UserResponse>();
+            response.ForEach(u =>
+            {
+                users.Add(_mapper.Map<UserResponse>(u));
+            });
+            return new CustomResult<List<UserResponse>>(200)
+            {
+
+                LogMessage = "ok",
+                Data = users
+
+            };
+
+        }
 
         public async Task<Result<UserResponse>> GetByToken(HttpContext context)
         {
@@ -250,7 +279,7 @@ namespace Service.Services
                     Data = new GenericResponse
                     {
                         Response = "Adicionado com sucesso",
-                        Statuscode = 401
+                        Statuscode = 200
                     }
 
                 };
@@ -264,7 +293,7 @@ namespace Service.Services
                     Data = new GenericResponse
                     {
                         Response = "Não foi possivel adicional o imovel",
-                        Statuscode = 401
+                        Statuscode = 500
                     }
 
                 };
@@ -285,8 +314,8 @@ namespace Service.Services
                     LogMessage = "",
                     Data = new GenericResponse
                     {
-                        Response = "Adicionado com sucesso",
-                        Statuscode = 401
+                        Response = "Removido com sucesso",
+                        Statuscode = 200
                     }
 
                 };
@@ -299,8 +328,8 @@ namespace Service.Services
                     LogMessage = "",
                     Data = new GenericResponse
                     {
-                        Response = "Não foi possivel adicional o imovel",
-                        Statuscode = 401
+                        Response = "Não foi possivel remover o imovel",
+                        Statuscode = 500
                     }
 
                 };
