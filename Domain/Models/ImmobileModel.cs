@@ -12,6 +12,7 @@ namespace Domain.Models
     public class ImmobileModel : BaseModel
     {
         public string ExternalId { get; set; }
+        public string SiteUrl { get; set; }
         public string Title { get; set; }
         public string Address { get; set; }
         public decimal Price { get; set; }
@@ -22,6 +23,12 @@ namespace Domain.Models
         public int BairroId { get; set; }
         public BairroModel Bairro { get; set; }
         public string Map { get; set; }
+
+        public DateTime WebScrappingDate { get; set; }
+
+        public bool IsActive { get; set; }
+
+
 
         [NotMapped]
         public virtual ICollection<UserPreferenceModel> UserPreferences { get; set; }

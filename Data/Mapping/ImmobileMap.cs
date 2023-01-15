@@ -24,7 +24,18 @@ namespace Data.Mapping
                 .IsRequired()
                 .HasColumnName("Title")
                 .HasColumnType("varchar(100)");
-           
+
+            builder.Property(prop => prop.SiteUrl)
+                .HasConversion(prop => prop.ToString(), prop => prop)
+                .IsRequired()
+                .HasColumnName("site_url")
+                .HasColumnType("text");
+
+            builder.Property(prop => prop.IsActive)
+                .IsRequired()
+                .HasColumnName("in_use")
+                .HasColumnType("bit");
+
             builder.Property(prop => prop.Address)
               .HasConversion(prop => prop.ToString(), prop => prop)
               .IsRequired()
@@ -51,6 +62,11 @@ namespace Data.Mapping
                 .IsRequired()
                 .HasColumnName("Price")
                 .HasColumnType("decimal(10,2)");
+
+            builder.Property(prop => prop.WebScrappingDate)
+               .IsRequired()
+               .HasColumnName("webscraping_date")
+               .HasColumnType("datetime");
 
             builder.Property(prop => prop.Images)
                .HasConversion(prop => JsonSerializer.Serialize(prop, new JsonSerializerOptions { WriteIndented = true }), prop => prop)

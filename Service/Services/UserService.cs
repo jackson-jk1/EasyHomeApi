@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -73,7 +74,22 @@ namespace Service.Services
             var user = _mapper.Map<UserModel>(userreq);
             user.Image = nomeUnicoArquivo;
             user.Password = EncryptHelper.Encrypt(userreq.Password);
-            _baseRepository.Insert(user);
+            try
+            {
+                _baseRepository.Insert(user);
+            }
+            catch (Exception e)
+            { 
+          
+                    return new CustomResult<GenericResponse>(400)
+                    {
+
+                        LogMessage = "ok",
+                        Data = new GenericResponse { Response = "Email ou Telefone já cadastrado", Statuscode = 400 }
+
+
+                    };
+            }
             return new CustomResult<GenericResponse>(200)
             {
 
@@ -86,8 +102,9 @@ namespace Service.Services
 
         public async Task<Result<GenericResponse>> UpdatePassword(HttpContext context, PasswordRequest passreq)
         {
-            var user = _mapper.Map<UserModel>(context.Items["User"]);
-            if (user.Password == EncryptHelper.Encrypt(passreq.PasswordNew))
+            var u = _mapper.Map<UserModel>(context.Items["User"]);
+            UserModel user = _baseRepository.Select(u.Id);
+            if (user.Password == EncryptHelper.Encrypt(passreq.PasswordOld))
             {
                 user.Password = EncryptHelper.Encrypt(passreq.PasswordNew);
                 _baseRepository.Update(user);
@@ -111,7 +128,8 @@ namespace Service.Services
  
         public async Task<Result<GenericResponse>> Update(HttpContext context, UserRequest userreq)
         {
-            var user = _mapper.Map<UserModel>(context.Items["User"]);
+            var u = _mapper.Map<UserModel>(context.Items["User"]);
+            UserModel user = _baseRepository.Select(u.Id);
             string nomeUnicoArquivo = ImageHelper.UploadedFile(userreq.Image, _appEnvironment.WebRootPath);
             if (nomeUnicoArquivo != null)
             {
@@ -121,6 +139,7 @@ namespace Service.Services
             user.Email = userreq.Email;
             user.CellPhone = userreq.CellPhone;
             user.Name = userreq.Name;
+            
             _baseRepository.Update(user);
             return new CustomResult<GenericResponse>(200)
             {
@@ -154,14 +173,37 @@ namespace Service.Services
             }
             if (!userJwt.Equals(default))
             {
-                string caracteres = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789!@$?_-";
-                char[] chars = new char[8];
-                Random rd = new Random();
-                for (int i = 0; i < 8; i++)
+                var specialChars = "!@#$%^&*";
+                var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                var lowerChars = "abcdefghijklmnopqrstuvwxyz";
+                var numbers = "0123456789";
+                var allChars = specialChars + upperChars + lowerChars + numbers;
+
+                var random = new Random();
+                var password = new string(
+                    Enumerable.Repeat(allChars, 8)
+                              .Select(s => s[random.Next(s.Length)])
+                              .ToArray());
+
+                if (!password.Any(c => specialChars.Contains(c)))
                 {
-                    chars[i] = caracteres[rd.Next(0, caracteres.Length)];
+                    password = specialChars[random.Next(specialChars.Length)] + password.Substring(1);
                 }
-                var password = new string(chars);
+
+                if (!password.Any(c => upperChars.Contains(c)))
+                {
+                    password = upperChars[random.Next(upperChars.Length)] + password.Substring(1);
+                }
+
+                if (!password.Any(c => lowerChars.Contains(c)))
+                {
+                    password = lowerChars[random.Next(lowerChars.Length)] + password.Substring(1);
+                }
+
+                if (!password.Any(c => numbers.Contains(c)))
+                {
+                    password = numbers[random.Next(numbers.Length)] + password.Substring(1);
+                }
                 userJwt.Password = EncryptHelper.Encrypt(password);
                 _baseRepository.Update(userJwt);
                 SendGridHelper.Send(userJwt,password);

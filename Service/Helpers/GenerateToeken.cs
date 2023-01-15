@@ -22,7 +22,6 @@ namespace Service.Helpers
                 new Claim("Name", user.Name),
                 new Claim("Email", user.Email),
              }),
-                Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials
             (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

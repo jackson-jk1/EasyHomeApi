@@ -12,6 +12,7 @@ namespace Domain.Interfaces
     {
         public List<ImmobileModel> getByFilters(FilterRequest filters);
 
-
+        public List<ImmobileModel> getByUser(int id);
+        
     }
 }

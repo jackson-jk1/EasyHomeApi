@@ -54,7 +54,7 @@ namespace Application.Controllers
 
         [HttpPut("v1/user/password")]
         [Authorize]
-        public async Task<IActionResult> UpdatePassword([FromForm] PasswordRequest pass)
+        public async Task<IActionResult> UpdatePassword([FromBody] PasswordRequest pass)
         {
             _stopwatch.Start();
             if (!ModelState.IsValid)

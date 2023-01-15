@@ -21,8 +21,8 @@ namespace Data.Repository
 
         public void Update(TEntity obj)
         {
-            _mySqlContext.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _mySqlContext.SaveChanges();
+           _mySqlContext.Set<TEntity>().Update(obj);
+           _mySqlContext.SaveChanges();
         }
 
         public void Delete(int id)

@@ -12,6 +12,8 @@ namespace Service.Interfaces
     
     {
         Task<Result<PaginatedListModel<ImmobileResponse>>> GetImmobiles(FilterRequest filters);
-      
+
+        Task<Result<PaginatedListModel<ImmobileResponse>>> getImmobileByUser(HttpContext context, FilterRequest filters);
+
     }
 }

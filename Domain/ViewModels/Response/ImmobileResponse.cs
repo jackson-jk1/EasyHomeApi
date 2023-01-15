@@ -9,6 +9,8 @@ namespace Domain.ViewModels.Response
         public int Id { get; set; }
         [JsonPropertyName("Title")]
         public string Title { get; set; }
+        [JsonPropertyName("SiteUrl")]
+        public string SiteUrl { get; set; }
         [JsonPropertyName("Address")]
         public string Address { get; set; }
         [JsonPropertyName("Price")]
@@ -21,6 +23,9 @@ namespace Domain.ViewModels.Response
         public BairroModel Bairro { get; set; }
         [JsonPropertyName("Imgs")]
         public virtual List<string> Imgs { get; set; }
+
+        [JsonPropertyName("IsActive")]
+        public bool IsActive { get; set; }
         [JsonPropertyName("Map")]
         public string Map { get; set; }
         [JsonPropertyName("UserPreferences")]

@@ -18,28 +18,37 @@ namespace Data.Repository
 
         public List<ImmobileModel> getByFilters(FilterRequest filters)
         {
-             var polo = _mySqlContext.Set<PoloModel>().Where(p => p.Name == filters.Polo).FirstOrDefault();
+            var polo = _mySqlContext.Set<PoloModel>().Where(p => p.Name == filters.Polo).FirstOrDefault();
+            IEnumerable<ImmobileModel> list = new List<ImmobileModel>();
+            if (polo != null)
+            {
+                string query = $"select immo.* from Immobile immo, Bairro b, BairrosPolo bp, Polo p where immo.IsActive = true and immo.bairroId = b.Id and bp.bairroId = b.Id and p.Id = bp.poloId and p.Name = '{polo.Name}';";
 
-            if (polo != null) {
-                if (filters.ValueMax > 0 && filters.Rooms > 0)
-                {
-                    return _mySqlContext.Set<ImmobileModel>().Where(i => i.Price <= filters.ValueMax && i.Rooms <= filters.Rooms).ToList();
-                }
+                list = _mySqlContext.Set<ImmobileModel>().FromSqlRaw(query);
+            }
+            else
+            {
+                list = _mySqlContext.Set<ImmobileModel>().Where(i => i.IsActive == true);
+            }
                 if (filters.ValueMax > 0)
                 {
-                    return _mySqlContext.Set<ImmobileModel>().Where(i => i.Price <= filters.ValueMax).ToList();
+                    list = list.Where(i => i.Price <= filters.ValueMax);
                 }
-                if (filters.Rooms > 0)
+                 if (filters.Rooms > 0)
                 {
-                    return _mySqlContext.Set<ImmobileModel>().Where(i => i.Rooms <= filters.Rooms).ToList();
+                    list = list.Where(i => i.Rooms <= filters.Rooms);
                 }
-                string query = $"select immo.* from Immobile immo, Bairro b, BairrosPolo bp, Polo p where immo.bairroId = b.Id and bp.bairroId = b.Id and p.Id = bp.poloId and p.Name = '{polo.Name}';";
-    
+                return list.ToList();
+        }
+
+        public List<ImmobileModel> getByUser(int id)
+        {
+ 
+                string query = $"select immo.* from Immobile immo, UserPreference up where immo.Id = up.immobileId and up.userId = '{id}';";
+
                 return _mySqlContext.Set<ImmobileModel>().
                    FromSqlRaw(query).ToList();
-            }
-
-            return _mySqlContext.Set<ImmobileModel>().ToList();
+         
         }
 
     }

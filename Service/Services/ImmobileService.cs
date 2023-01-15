@@ -5,6 +5,7 @@ using Domain.Models.Base;
 using Domain.Utils.Result;
 using Domain.ViewModels.Request;
 using Domain.ViewModels.Response;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Interfaces;
 using System.Text.Json;
@@ -30,7 +31,7 @@ namespace Service.Services
 
         public async Task<Result<PaginatedListModel<ImmobileResponse>>> GetAllImmobiles(int pageNumber = 1)
         {
-            var response = _immobileRepository.Select().ToList();
+            var response = _immobileRepository.Select().Where(i => i.IsActive = true).ToList();
             List<ImmobileResponse> immobiles = new List<ImmobileResponse>();
 
             response.ForEach(res =>
@@ -46,6 +47,29 @@ namespace Service.Services
                 Data = await PaginatedListModel<ImmobileResponse>.CreateAsync(immobiles.AsQueryable().AsNoTracking(), pageNumber, 10)
             };
             
+        }
+
+        public async Task<Result<PaginatedListModel<ImmobileResponse>>> getImmobileByUser(HttpContext context, FilterRequest filters)
+        {
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
+
+            var response = _immobileRepository.getByUser(user.Id);
+
+
+            List<ImmobileResponse> immobiles = new List<ImmobileResponse>();
+
+            response.ForEach(res =>
+            {
+                var imm = _mapper.Map<ImmobileResponse>(res);
+                imm.Imgs = JsonSerializer.Deserialize<List<string>>(res.Images)!;
+                immobiles.Add(imm);
+            });
+
+
+            return new CustomResult<PaginatedListModel<ImmobileResponse>>(200)
+            {
+                Data = await PaginatedListModel<ImmobileResponse>.CreateAsync(immobiles.AsQueryable().AsNoTracking(), filters.Page, 10)
+            };
         }
 
         public async Task<Result<PaginatedListModel<ImmobileResponse>>> GetImmobiles(FilterRequest filters)

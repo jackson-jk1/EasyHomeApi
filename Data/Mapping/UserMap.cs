@@ -23,7 +23,7 @@ namespace Data.Mapping
                .IsRequired()
                .HasColumnName("Email")
                .HasColumnType("varchar(150)");
-            
+
             builder.Property(prop => prop.CellPhone)
                .HasConversion(prop => prop.ToString(), prop => prop)
                .IsRequired()
@@ -35,12 +35,15 @@ namespace Data.Mapping
                 .IsRequired()
                 .HasColumnName("Password")
                 .HasColumnType("varchar(255)");
-            
+
             builder.Property(prop => prop.Image)
                .HasConversion(prop => prop.ToString(), prop => prop)
                .HasDefaultValue(null)
                .HasColumnName("Image")
                .HasColumnType("varchar(255)");
+
+            builder.HasAlternateKey(prop => prop.Email).HasName("AlternateKey_Email");
+            builder.HasAlternateKey(prop => prop.CellPhone).HasName("AlternateKey_CellPhone");
         }
     }
 }

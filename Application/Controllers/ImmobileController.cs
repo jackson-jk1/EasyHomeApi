@@ -1,9 +1,8 @@
 ﻿using Domain.Interfaces;
 using Domain.ViewModels.Request;
 using Microsoft.AspNetCore.Mvc;
+using Service.Helpers;
 using Service.Interfaces;
-using Service.Services;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Application.Controllers
 {
@@ -26,10 +25,20 @@ namespace Application.Controllers
 
 
         [HttpPost("v1/immobiles/{id}")]
-        public async Task<IActionResult> GetImmobile(FilterRequest filters)
+        public async Task<IActionResult> GetImmobile([FromBody] FilterRequest filters)
         {
             _stopwatch.Start();
             return FromResult(await _immobilesService.GetImmobiles(filters));
+
+        }
+
+        [Authorize]
+        [HttpPost("v1/immobiles/getByUser/")]
+        public async Task<IActionResult> getImmobileByUser([FromBody] FilterRequest filters)
+        {
+            _stopwatch.Start();
+            var data = await _immobilesService.getImmobileByUser(HttpContext,filters);
+            return Json(new { data = data.Data });
 
         }
     }

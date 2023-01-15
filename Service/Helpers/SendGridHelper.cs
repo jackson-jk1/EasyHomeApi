@@ -15,7 +15,7 @@ namespace Service.Helpers
             var from = new EmailAddress("easyhometcc2022@gmail.com", "EasyHome");
 
             var to = new EmailAddress(user.Email, user.Name);
-            var plainTextContent = "EasyHome";
+            var plainTextContent = $"Ola {user.Name}, esse é um email de recuperação de senha";
             var htmlContent = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n" +
                 "<html data-editor-version=\"2\" class=\"sg-campaigns\" xmlns=\"http://www.w3.org/1999/xhtml\">\r\n    <head>\r\n" +
                 "      <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n" +
