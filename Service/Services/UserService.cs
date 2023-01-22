@@ -139,17 +139,29 @@ namespace Service.Services
             user.Email = userreq.Email;
             user.CellPhone = userreq.CellPhone;
             user.Name = userreq.Name;
-            
-            _baseRepository.Update(user);
+
+            try
+            {
+                _baseRepository.Update(user);
+            }
+            catch (Exception e)
+            {
+
+                return new CustomResult<GenericResponse>(400)
+                {
+
+                    LogMessage = "ok",
+                    Data = new GenericResponse { Response = "Email ou Telefone já cadastrado", Statuscode = 400 }
+
+
+                };
+            }
             return new CustomResult<GenericResponse>(200)
             {
 
                 LogMessage = "ok",
-                Data = new GenericResponse
-                {
-                    Response = "Atualizado com sucesso" ,
-                    Statuscode = 200
-                }
+                Data = new GenericResponse { Response = "Perfil Atualizada com sucesso", Statuscode = 200 }
+
 
             };
         }

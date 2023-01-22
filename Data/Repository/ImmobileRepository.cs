@@ -22,7 +22,7 @@ namespace Data.Repository
             IEnumerable<ImmobileModel> list = new List<ImmobileModel>();
             if (polo != null)
             {
-                string query = $"select immo.* from Immobile immo, Bairro b, BairrosPolo bp, Polo p where immo.IsActive = true and immo.bairroId = b.Id and bp.bairroId = b.Id and p.Id = bp.poloId and p.Name = '{polo.Name}';";
+                string query = $"select immo.* from Immobile immo, Bairro b, BairrosPolo bp, Polo p where immo.in_use = true and immo.bairroId = b.Id and bp.bairroId = b.Id and p.Id = bp.poloId and p.Name = '{polo.Name}';";
 
                 list = _mySqlContext.Set<ImmobileModel>().FromSqlRaw(query);
             }

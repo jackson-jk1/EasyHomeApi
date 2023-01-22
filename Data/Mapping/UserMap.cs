@@ -42,8 +42,13 @@ namespace Data.Mapping
                .HasColumnName("Image")
                .HasColumnType("varchar(255)");
 
-            builder.HasAlternateKey(prop => prop.Email).HasName("AlternateKey_Email");
-            builder.HasAlternateKey(prop => prop.CellPhone).HasName("AlternateKey_CellPhone");
+            builder
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+            builder
+                .HasIndex(u => u.CellPhone)
+                .IsUnique();
         }
     }
 }

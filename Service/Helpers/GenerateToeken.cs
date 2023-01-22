@@ -23,9 +23,11 @@ namespace Service.Helpers
                 new Claim("Email", user.Email),
              }),
                 SigningCredentials = new SigningCredentials
+          
             (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+           
             };
-            
+            tokenDescriptor.Expires = null;
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var stringToken = tokenHandler.WriteToken(token);
             return stringToken;
