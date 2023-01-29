@@ -3,6 +3,7 @@ using Domain.Models;
 using Domain.ViewModels.Response;
 using Domain.ViewModels.Response.Auth;
 using Domain.ViewModels.Response.Filtros;
+using Domain.ViewModels.Response.Notificacoes;
 using System.Text.Json;
 
 
@@ -21,6 +22,25 @@ namespace Service.AutoMapper
                 Image = model.Image,
                 UserPreferences = model.UserPreferences,
                 
+            });
+            CreateMap<UserModel, ContactResponse>().ConstructUsing(model => new ContactResponse
+            {
+                ContactId = model.Id,
+                Name = model.Name,
+                Email = model.Email,
+                CellPhone = model.CellPhone,
+
+            });
+
+            CreateMap<Notification, NotificationResponse>().ConstructUsing(model => new NotificationResponse
+            {
+                Id = model.Id,
+                UserId = model.UserId,
+                Name = model.User.Name,
+                Status = model.Status,
+                Read = model.Read
+
+
             });
             CreateMap<PoloModel, PoloResponse>().ConstructUsing(model => new PoloResponse
             {

@@ -2,7 +2,9 @@
 using Domain.Request.Auth;
 using Domain.Utils.Result;
 using Domain.ViewModels.Request;
+using Domain.ViewModels.Response;
 using Domain.ViewModels.Response.Auth;
+using Domain.ViewModels.Response.Notificacoes;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 
@@ -20,6 +22,16 @@ namespace Service.Interfaces
         Task<Result<UserResponse>> GetById(int id);
         Task<Result<GenericResponse>> addFavorite(HttpContext context, int immId);
         Task<Result<GenericResponse>> removeFavorite(HttpContext context, int immId);
+        Task<Result<GenericResponse>> addNotification(HttpContext context, NotificationRequest not);
+        void deleteNotification(HttpContext context, int NotificationId);
+        void readNotification(HttpContext context);
+        Task<Result<List<ContactResponse>>> listContacts(HttpContext context);
+        Task<Result<List<NotificationResponse>>> listNotifications(HttpContext context);
+        Task<Result<GenericResponse>> addContact(HttpContext context, int id);
+        Task<Result<GenericResponse>> removeContact(HttpContext context, int id);
         Task<Result<List<UserResponse>>> getUsersByImmobile(HttpContext context, int immId);
+      
+
+
     }
 }

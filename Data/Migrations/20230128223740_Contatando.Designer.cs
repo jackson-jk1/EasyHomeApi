@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20230115205945_Intial")]
-    partial class Intial
+    [Migration("20230128223740_Contatando")]
+    partial class Contatando
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,26 @@ namespace Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Contacts", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersThatContactMeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ContactId");
+
+                    b.HasIndex("ContactId");
+
+                    b.HasIndex("UsersThatContactMeId");
+
+                    b.ToTable("Contacts");
+                });
 
             modelBuilder.Entity("Domain.Models.BairroModel", b =>
                 {
@@ -121,6 +141,33 @@ namespace Data.Migrations
                     b.ToTable("Immobile", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContatandoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContatandoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("Domain.Models.PoloModel", b =>
                 {
                     b.Property<int>("Id")
@@ -170,11 +217,11 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("CellPhone")
-                        .HasName("AlternateKey_CellPhone");
+                    b.HasIndex("CellPhone")
+                        .IsUnique();
 
-                    b.HasAlternateKey("Email")
-                        .HasName("AlternateKey_Email");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });
@@ -194,6 +241,31 @@ namespace Data.Migrations
                     b.HasIndex("ImmobileId");
 
                     b.ToTable("UserPreference", (string)null);
+                });
+
+            modelBuilder.Entity("Contacts", b =>
+                {
+                    b.HasOne("Domain.Models.UserModel", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.UserModel", null)
+                        .WithMany()
+                        .HasForeignKey("UsersThatContactMeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contact");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.BairrosPoloModel", b =>
@@ -224,6 +296,25 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Bairro");
+                });
+
+            modelBuilder.Entity("Domain.Models.Notification", b =>
+                {
+                    b.HasOne("Domain.Models.UserModel", "Contatando")
+                        .WithMany()
+                        .HasForeignKey("ContatandoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.UserModel", "User")
+                        .WithMany("Notification")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contatando");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.UserPreferenceModel", b =>
@@ -262,6 +353,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Models.UserModel", b =>
                 {
+                    b.Navigation("Notification");
+
                     b.Navigation("UserPreferences");
                 });
 #pragma warning restore 612, 618

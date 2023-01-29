@@ -27,6 +27,7 @@ namespace Data.Context
             modelBuilder.Entity<UserPreferenceModel>(new UserPreferenceMap().Configure);
             modelBuilder.Entity<BairroModel>(new BairroMap().Configure);
             modelBuilder.Entity<PoloModel>(new PoloMap().Configure);
+            modelBuilder.Entity<ContactsModel>(new ContactsMap().Configure);
             modelBuilder.Entity<BairrosPoloModel>(new BairrosPoloMap().Configure);
         }
     }

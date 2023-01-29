@@ -7,7 +7,7 @@ using Service.Services;
 
 namespace Service.Helpers
 {
-    public abstract class GenerateToeken
+    public abstract class GenerateToken
     {
 
         public static string TokenJwt(UserModel user)
@@ -16,18 +16,23 @@ namespace Service.Helpers
             var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("Key"));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+              
                 Subject = new ClaimsIdentity(new[]
+               
             {
                 new Claim("Id", user.Id.ToString()),
                 new Claim("Name", user.Name),
                 new Claim("Email", user.Email),
              }),
                 SigningCredentials = new SigningCredentials
+               
+
           
-            (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-           
+            (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Expires = DateTime.UtcNow.AddYears(1)
+
             };
-            tokenDescriptor.Expires = null;
+        
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var stringToken = tokenHandler.WriteToken(token);
             return stringToken;

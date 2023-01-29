@@ -5,6 +5,7 @@ using Service.Interfaces;
 using Service.Helpers;
 using Domain.ViewModels.Request;
 using Service.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Controllers
 {
@@ -129,7 +130,7 @@ namespace Application.Controllers
             return Json(new { data = data.Data });
 
         }
-
+        
         [Authorize]
         [HttpGet("v1/user/getByImm/{id}")]
         public async Task<IActionResult> getUsersByImmobile(int id)
@@ -139,6 +140,80 @@ namespace Application.Controllers
             return Json(new { data = data.Data });
 
         }
+
+  
+        [Authorize]
+        [HttpPut("v1/user/addNotification/")]
+        public async Task<IActionResult> addNotification([FromBody] NotificationRequest not)
+        {
+            _stopwatch.Start();
+            var data = await _userService.addNotification(HttpContext, not);
+            return Json(new { data = data.Data });
+
+        }
+
+        [Authorize]
+        [HttpPut("v1/user/readNotification/")]
+        public void readNotification()
+        {
+            _stopwatch.Start();
+            _userService.readNotification(HttpContext);
+
+        }
+
+
+
+        [Authorize]
+        [HttpDelete("v1/user/removeNotification/")]
+        public void removeNotification(int id)
+        {
+            _stopwatch.Start();
+            _userService.deleteNotification(HttpContext,id);
+        }
+      
+        
+        [Authorize]
+        [HttpGet("v1/user/listNotification")]
+        public async Task<IActionResult> listNotification()
+        {
+            _stopwatch.Start();
+            var data = await _userService.listNotifications(HttpContext);
+            return Json(new { data = data.Data });
+
+        }
+
+       
+       [Authorize]
+       [HttpGet("v1/user/listContacts")]
+       public async Task<IActionResult> listContacts()
+       {
+           _stopwatch.Start();
+           var data = await _userService.listContacts(HttpContext);
+           return Json(new { data = data.Data });
+
+       }
+
+        [Authorize]
+        [HttpPost("v1/user/addContact/{id}")]
+        public async Task<IActionResult> addContact(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.addContact(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
+        
+        [Authorize]
+        [HttpDelete("v1/user/removeContact/{id}")]
+        public async Task<IActionResult> removeContact(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.removeContact(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
 
     }
 }

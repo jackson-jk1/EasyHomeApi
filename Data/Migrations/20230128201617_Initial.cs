@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class Intial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,8 +63,6 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.UniqueConstraint("AlternateKey_CellPhone", x => x.CellPhone);
-                    table.UniqueConstraint("AlternateKey_Email", x => x.Email);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -132,6 +130,60 @@ namespace Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Contacts",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ContactId = table.Column<int>(type: "int", nullable: false),
+                    UsersThatContactMeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contacts", x => new { x.UserId, x.ContactId });
+                    table.ForeignKey(
+                        name: "FK_Contacts_User_ContactId",
+                        column: x => x.ContactId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contacts_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contacts_User_UsersThatContactMeId",
+                        column: x => x.UsersThatContactMeId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Read = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NotificationModel_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "UserPreference",
                 columns: table => new
                 {
@@ -162,9 +214,36 @@ namespace Data.Migrations
                 column: "bairroId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Contacts_ContactId",
+                table: "Contacts",
+                column: "ContactId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contacts_UsersThatContactMeId",
+                table: "Contacts",
+                column: "UsersThatContactMeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Immobile_bairroId",
                 table: "Immobile",
                 column: "bairroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotificationModel_UserId",
+                table: "Notification",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_CellPhone",
+                table: "User",
+                column: "CellPhone",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPreference_immobileId",
@@ -176,6 +255,12 @@ namespace Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BairrosPolo");
+
+            migrationBuilder.DropTable(
+                name: "Contacts");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "UserPreference");

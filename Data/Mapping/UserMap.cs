@@ -49,6 +49,14 @@ namespace Data.Mapping
             builder
                 .HasIndex(u => u.CellPhone)
                 .IsUnique();
+
+             
+            builder
+            .HasMany(u => u.Notification)
+            .WithOne(n => n.User)
+            .HasForeignKey(n => n.UserId);
+           
+            
         }
     }
 }

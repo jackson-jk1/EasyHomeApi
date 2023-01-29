@@ -18,6 +18,7 @@ namespace Domain.Models
 
         [NotMapped]
         public virtual ICollection<UserPreferenceModel> UserPreferences { get; set; }
-
+        public virtual ICollection<Notification> Notification { get; set; } = new List<Notification>();
+        public virtual ICollection<ContactsModel> Contacts { get; set; } = new List<ContactsModel>();
     }
 }
