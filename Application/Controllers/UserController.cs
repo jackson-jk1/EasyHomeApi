@@ -152,6 +152,8 @@ namespace Application.Controllers
 
         }
 
+
+       
         [Authorize]
         [HttpPut("v1/user/readNotification/")]
         public void readNotification()
@@ -193,12 +195,33 @@ namespace Application.Controllers
 
        }
 
+     
         [Authorize]
-        [HttpPost("v1/user/addContact/{id}")]
-        public async Task<IActionResult> addContact(int id)
+        [HttpPost("v1/user/sendInvitation/{id}")]
+        public async Task<IActionResult> sendInvitation(int id)
         {
             _stopwatch.Start();
-            var data = await _userService.addContact(HttpContext, id);
+            var data = await _userService.sendInvitation(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
+        [Authorize]
+        [HttpPost("v1/user/recuseInvitation/{id}/{notId}")]
+        public async Task<IActionResult> recuseInvitation(int id, int notId)
+        {
+            _stopwatch.Start();
+            var data = await _userService.recuseInvitation(HttpContext, id, notId);
+            return Json(new { data = data.Data });
+
+        }
+
+        [Authorize]
+        [HttpPost("v1/user/addContact/{id}/{notId}")]
+        public async Task<IActionResult> addContact(int id, int notId)
+        {
+            _stopwatch.Start();
+            var data = await _userService.addContact(HttpContext, id, notId);
             return Json(new { data = data.Data });
 
         }

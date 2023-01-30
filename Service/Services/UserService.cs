@@ -513,8 +513,88 @@ namespace Service.Services
             };
 
         }
+        public async Task<Result<GenericResponse>> sendInvitation(HttpContext context, int id)
+        {
+            var u = _mapper.Map<UserModel>(context.Items["User"]);
+            UserModel contatado = _baseRepository.Select(id);
+            UserModel user = _baseRepository.Select(u.Id);
 
-        public async Task<Result<GenericResponse>> addContact(HttpContext context, int  id)
+            try
+            { 
+                Notification notification = new Notification();
+                notification.Status = 0;
+                notification.Read = false;
+                notification.User = contatado;
+                notification.Contatando = user;
+                notification.Expires = DateTime.Now;
+                contatado.Notification.Add(notification);
+                _baseRepository.Update(contatado);
+            }
+            catch (Exception e)
+            {
+
+                return new CustomResult<GenericResponse>(400)
+                {
+
+                    LogMessage = "ok",
+                    Data = new GenericResponse { Response = "Solicitação já enviada", Statuscode = 400 }
+
+
+                };
+            }
+            return new CustomResult<GenericResponse>(200)
+            {
+
+                LogMessage = "ok",
+                Data = new GenericResponse { Response = "Solicitação enviada com sucesso", Statuscode = 200 }
+
+
+            };
+
+         }
+
+        public async Task<Result<GenericResponse>> recuseInvitation(HttpContext context, int id, int notId)
+        {
+            var u = _mapper.Map<UserModel>(context.Items["User"]);
+            UserModel contatado = _baseRepository.Select(id);
+            UserModel user = _baseRepository.Select(u.Id);
+
+            try
+            {
+                Notification notification = new Notification();
+                notification.Status = 2;
+                notification.Read = false;
+                notification.User = contatado;
+                notification.Contatando = user;
+                notification.Expires = DateTime.Now;
+                contatado.Notification.Add(notification);
+                _baseRepository.Update(contatado);
+                _baseRepository.deleteNotification(notId);
+            }
+            catch (Exception e)
+            {
+
+                return new CustomResult<GenericResponse>(400)
+                {
+
+                    LogMessage = "ok",
+                    Data = new GenericResponse { Response = "Solicitação já enviada", Statuscode = 400 }
+
+
+                };
+            }
+            return new CustomResult<GenericResponse>(200)
+            {
+
+                LogMessage = "ok",
+                Data = new GenericResponse { Response = "Solicitação enviada com sucesso", Statuscode = 200 }
+
+
+            };
+
+        }
+
+        public async Task<Result<GenericResponse>> addContact(HttpContext context, int id, int notId)
         {
             var u = _mapper.Map<UserModel>(context.Items["User"]);
             UserModel contatado = _baseRepository.Select(id);
@@ -524,13 +604,14 @@ namespace Service.Services
             {
                 _baseRepository.addContact(user, contatado);
                 Notification notification = new Notification();
-                notification.Status = 0;
+                notification.Status = 1;
                 notification.Read = false;
                 notification.User = contatado;
                 notification.Contatando = user;
                 notification.Expires = DateTime.Now;
                 contatado.Notification.Add(notification);
                 _baseRepository.Update(contatado);
+                _baseRepository.deleteNotification(notId);
             }
             catch (Exception e)
             {

@@ -21,7 +21,7 @@ namespace Domain.ViewModels.Response.Notificacoes
         [JsonPropertyName("Name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("Lido")]
+        [JsonPropertyName("Read")]
         public bool Read { get; set; }
 
 

@@ -23,6 +23,10 @@ namespace Domain.ViewModels.Response
         [JsonPropertyName("Email")]
         public string Email { get; set; }
 
+        [JsonPropertyName("Image")]
+        public string Image { get; set; }
+
+
         [JsonPropertyName("CellPhone")]
         public string CellPhone { get; set; }
 

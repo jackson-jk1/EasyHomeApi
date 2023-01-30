@@ -27,11 +27,10 @@ namespace Service.Interfaces
         void readNotification(HttpContext context);
         Task<Result<List<ContactResponse>>> listContacts(HttpContext context);
         Task<Result<List<NotificationResponse>>> listNotifications(HttpContext context);
-        Task<Result<GenericResponse>> addContact(HttpContext context, int id);
+        Task<Result<GenericResponse>> addContact(HttpContext context, int id, int notId);
         Task<Result<GenericResponse>> removeContact(HttpContext context, int id);
+        Task<Result<GenericResponse>> sendInvitation(HttpContext context, int id);
         Task<Result<List<UserResponse>>> getUsersByImmobile(HttpContext context, int immId);
-      
-
-
+        Task<Result<GenericResponse>> recuseInvitation(HttpContext httpContext, int id, int notId);
     }
 }

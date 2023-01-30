@@ -18,7 +18,7 @@ namespace Data.Repository
         public UserRepository(MySqlContext mySqlContext) : base(mySqlContext)
         {
         }
-        private string queryGetByImmbile = "Select distinct * from User u, UserPreference up where u.Id = up.userId and up.immobileId = ";
+        
         private string queryGetContacts = "select u.* from User u, Contacts c where u.Id = c.contactId and c.userId = ";
         public string queryReadNotification = "update Notification set `Read` = 1 where UserId = ";
         public string queryDeleteNotification = "delete from Notification where Id = ";
@@ -57,8 +57,8 @@ namespace Data.Repository
             var user = _mySqlContext.Set<UserModel>().Where(u => u.Id == userId).FirstOrDefault();
             if (user != null)
             {
-                queryGetByImmbile = queryGetByImmbile + $"'{immId}'";
-                List<UserModel> users = _mySqlContext.Set<UserModel>().FromSqlRaw(queryGetByImmbile).ToList();
+                string query = $"SELECT DISTINCT * FROM User u JOIN UserPreference up ON u.Id = up.userId WHERE up.immobileId = {immId} AND NOT EXISTS (SELECT 1 FROM Contacts c WHERE c.UserId = {userId} AND c.contactId = u.Id)";
+                List<UserModel> users = _mySqlContext.Set<UserModel>().FromSqlRaw(query).ToList();
                 users.Remove(user);
                 return users;
             }
@@ -91,7 +91,7 @@ namespace Data.Repository
         {
             var user = _mySqlContext.Set<UserModel>().FirstOrDefault();
 
-            queryGetContacts = queryGetContacts + $"'{userId}'";
+            queryGetContacts = queryGetContacts + userId;
             List<UserModel> users = _mySqlContext.Set<UserModel>().FromSqlRaw(queryGetContacts).ToList();
             if (user != null)
             {

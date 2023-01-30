@@ -28,6 +28,7 @@ namespace Service.AutoMapper
                 ContactId = model.Id,
                 Name = model.Name,
                 Email = model.Email,
+                Image = model.Image,
                 CellPhone = model.CellPhone,
 
             });

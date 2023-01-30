@@ -18,7 +18,7 @@ namespace Domain.ViewModels.Request
         [JsonPropertyName("Status")]
         public int Status { get; set; }
 
-        [JsonPropertyName("Lido")]
+        [JsonPropertyName("Read")]
         public bool Read { get; set; }
     }
 }
