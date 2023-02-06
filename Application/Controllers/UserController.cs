@@ -27,7 +27,7 @@ namespace Application.Controllers
         [AllowAnonymous]
         [HttpPost("v1/user/")]
      
-        public async Task<IActionResult> Register([FromForm] UserRequest user)
+        public async Task<IActionResult> register([FromForm] UserRequest user)
         {
             _stopwatch.Start();
             if (!ModelState.IsValid)
@@ -35,82 +35,25 @@ namespace Application.Controllers
 
                 return FromResult(ModelState);
             }
-            return FromResult(await _userService.Register(user));
+            return FromResult(await _userService.register(user));
             
         }
-
-        
-        [HttpPut("v1/user/")]
-        [Authorize]
-        public async Task<IActionResult> Update([FromForm] UserRequest user)
-        {
-            _stopwatch.Start();
-            if (!ModelState.IsValid && user.Image != null)
-            {
-                return FromResult(ModelState);
-            }
-            return FromResult(await _userService.Update(HttpContext, user));
-
-        }
-
-        [HttpPut("v1/user/password")]
-        [Authorize]
-        public async Task<IActionResult> UpdatePassword([FromBody] PasswordRequest pass)
-        {
-            _stopwatch.Start();
-            if (!ModelState.IsValid)
-            {
-                return FromResult(ModelState);
-            }
-            return FromResult(await _userService.UpdatePassword(HttpContext, pass));
-
-        }
-
-        [AllowAnonymous]
-        [HttpPut("v1/user/{email}")]
-
-        public async Task<IActionResult> Recover([FromRoute] string email)
-        {
-           
-            return FromResult(await _userService.Recover(email));
-
-        }
-
 
         // POST: UserController/Edit/5
         [AllowAnonymous]
         [HttpPost("v1/user/auth")]
  
    
-        public async Task<IActionResult> Auth([FromBody] LoginRequest login)
+        public async Task<IActionResult> auth([FromBody] LoginRequest login)
         {
             _stopwatch.Start();
             if (!ModelState.IsValid)
             {
                 return FromResult(ModelState);
             }
-            return FromResult(await _userService.Auth(login));
+            return FromResult(await _userService.auth(login));
 
         }
-        [Authorize]
-        [HttpGet("v1/user/")]
-        public async Task<IActionResult> GetUser()
-        {
-            _stopwatch.Start();
-            return FromResult(await _userService.GetByToken(HttpContext));
-
-        }
-
-        [Authorize]
-        [HttpGet("v1/user/preference/{id}")]
-        public async Task<IActionResult> GetImmobiles(int id)
-        {
-            _stopwatch.Start();
-            var data = await _userService.checkImmobile(HttpContext, id);
-            return Json(new { data = data.Data });
-
-        }
-
         [Authorize]
         [HttpPost("v1/user/addPreference/{id}")]
         public async Task<IActionResult> addPreference(int id)
@@ -118,6 +61,110 @@ namespace Application.Controllers
             _stopwatch.Start();
             var data = await _userService.addFavorite(HttpContext, id);
             return Json(new { data = data.Data });
+
+        }
+        [Authorize]
+        [HttpPost("v1/user/getContact/{idContact}")]
+        public async Task<IActionResult> getContact(int idContact)
+        {
+            _stopwatch.Start();
+            var data = await _userService.getContact(HttpContext, idContact);
+            return Json(new { data = data.Data });
+
+        }
+        [Authorize]
+        [HttpPost("v1/user/addContact/{id}/{notId}")]
+        public async Task<IActionResult> addContact(int id, int notId)
+        {
+            _stopwatch.Start();
+            var data = await _userService.addContact(HttpContext, id, notId);
+            return Json(new { data = data.Data });
+
+        }
+        [Authorize]
+        [HttpGet("v1/user/")]
+        public async Task<IActionResult> getUser()
+        {
+            _stopwatch.Start();
+            return FromResult(await _userService.getByToken(HttpContext));
+
+        }
+
+        [Authorize]
+        [HttpGet("v1/user/{contactId}")]
+        public async Task<IActionResult> getContactById(int contactId)
+        {
+            _stopwatch.Start();
+            return FromResult(await _userService.getById(contactId));
+
+        }
+
+        [Authorize]
+        [HttpGet("v1/user/preference/{id}")]
+        public async Task<IActionResult> checkImmobile(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.checkImmobile(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
+        
+        [Authorize]
+        [HttpGet("v1/user/getByImm/{id}")]
+        public async Task<IActionResult> getUsersByImmobile(int id)
+        {
+            _stopwatch.Start();
+            var data = await _userService.getUsersByImmobile(HttpContext, id);
+            return Json(new { data = data.Data });
+
+        }
+
+        [Authorize]
+        [HttpGet("v1/user/listContacts")]
+        public async Task<IActionResult> listContacts()
+        {
+            _stopwatch.Start();
+            var data = await _userService.listContacts(HttpContext);
+            return Json(new { data = data.Data });
+
+        }
+
+
+
+        [HttpPut("v1/user/")]
+        [Authorize]
+        public async Task<IActionResult> update([FromForm] UserRequest user)
+        {
+            _stopwatch.Start();
+            if (!ModelState.IsValid && user.Image != null)
+            {
+                return FromResult(ModelState);
+            }
+            return FromResult(await _userService.update(HttpContext, user));
+
+        }
+
+        [HttpPut("v1/user/password")]
+        [Authorize]
+        public async Task<IActionResult> updatePassword([FromBody] PasswordRequest pass)
+        {
+            _stopwatch.Start();
+            if (!ModelState.IsValid)
+            {
+                return FromResult(ModelState);
+            }
+            return FromResult(await _userService.updatePassword(HttpContext, pass));
+
+        }
+
+        [AllowAnonymous]
+        [HttpPut("v1/user/{email}")]
+
+        public async Task<IActionResult> recover([FromRoute] string email)
+        {
+
+            return FromResult(await _userService.recover(email));
 
         }
 
@@ -130,103 +177,7 @@ namespace Application.Controllers
             return Json(new { data = data.Data });
 
         }
-        
-        [Authorize]
-        [HttpGet("v1/user/getByImm/{id}")]
-        public async Task<IActionResult> getUsersByImmobile(int id)
-        {
-            _stopwatch.Start();
-            var data = await _userService.getUsersByImmobile(HttpContext, id);
-            return Json(new { data = data.Data });
 
-        }
-
-  
-        [Authorize]
-        [HttpPut("v1/user/addNotification/")]
-        public async Task<IActionResult> addNotification([FromBody] NotificationRequest not)
-        {
-            _stopwatch.Start();
-            var data = await _userService.addNotification(HttpContext, not);
-            return Json(new { data = data.Data });
-
-        }
-
-
-       
-        [Authorize]
-        [HttpPut("v1/user/readNotification/")]
-        public void readNotification()
-        {
-            _stopwatch.Start();
-            _userService.readNotification(HttpContext);
-
-        }
-
-
-
-        [Authorize]
-        [HttpDelete("v1/user/removeNotification/")]
-        public void removeNotification(int id)
-        {
-            _stopwatch.Start();
-            _userService.deleteNotification(HttpContext,id);
-        }
-      
-        
-        [Authorize]
-        [HttpGet("v1/user/listNotification")]
-        public async Task<IActionResult> listNotification()
-        {
-            _stopwatch.Start();
-            var data = await _userService.listNotifications(HttpContext);
-            return Json(new { data = data.Data });
-
-        }
-
-       
-       [Authorize]
-       [HttpGet("v1/user/listContacts")]
-       public async Task<IActionResult> listContacts()
-       {
-           _stopwatch.Start();
-           var data = await _userService.listContacts(HttpContext);
-           return Json(new { data = data.Data });
-
-       }
-
-     
-        [Authorize]
-        [HttpPost("v1/user/sendInvitation/{id}")]
-        public async Task<IActionResult> sendInvitation(int id)
-        {
-            _stopwatch.Start();
-            var data = await _userService.sendInvitation(HttpContext, id);
-            return Json(new { data = data.Data });
-
-        }
-
-        [Authorize]
-        [HttpPost("v1/user/recuseInvitation/{id}/{notId}")]
-        public async Task<IActionResult> recuseInvitation(int id, int notId)
-        {
-            _stopwatch.Start();
-            var data = await _userService.recuseInvitation(HttpContext, id, notId);
-            return Json(new { data = data.Data });
-
-        }
-
-        [Authorize]
-        [HttpPost("v1/user/addContact/{id}/{notId}")]
-        public async Task<IActionResult> addContact(int id, int notId)
-        {
-            _stopwatch.Start();
-            var data = await _userService.addContact(HttpContext, id, notId);
-            return Json(new { data = data.Data });
-
-        }
-
-        
         [Authorize]
         [HttpDelete("v1/user/removeContact/{id}")]
         public async Task<IActionResult> removeContact(int id)

@@ -9,7 +9,7 @@ namespace Domain.Interfaces
 {
     public interface IUserRepository : IBaseRepository<UserModel>
     {
-        public UserModel Auth(string email);
+        public UserModel auth(string email);
 
         public bool checkImmobil(int userId, int immId);
 
@@ -19,17 +19,12 @@ namespace Domain.Interfaces
 
         public void addContact(UserModel user, UserModel contatado);
         public void removeContact(UserModel user, UserModel contatado);
-
-        public void readNotification(int userId);
        
         public List<UserModel> getUsersByImmobile(int userId, int immId);
        
         public List<UserModel> listContacts(int userId);
 
         public UserModel getUserAndNotification(int userId, int NotificationId);
-        
-        void deleteNotification(int notificationId);
-
-        public List<Notification> getNotifications(int userId);
+        public bool getContact(int id, int idContact);
     }
 }

@@ -20,17 +20,20 @@ namespace CrossCutting
             service.AddScoped<IBaseRepository<UserModel>, BaseRepository<UserModel>>();
             service.AddScoped<IBaseRepository<PoloModel>, BaseRepository<PoloModel>>();
             service.AddScoped<IBaseRepository<ImmobileModel>, BaseRepository<ImmobileModel>>();
-            
-          
+            service.AddScoped<IBaseRepository<Notification>, BaseRepository<Notification>>();
+
+
 
             //////////////////////  instancias de service //////////////////////   
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IImmobileService, ImmobileService>();
             service.AddScoped<IFiltrosService, FiltrosService>();
+            service.AddScoped<INotificationService, NotificationService>();
 
             //////////////////////  instancias de contexto //////////////////////  
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<IImmobileRepository, ImmobileRepository>();
+            service.AddScoped<INotificationRepository, NotificationRepository>();
             service.AddScoped<MySqlContext>();
            
 

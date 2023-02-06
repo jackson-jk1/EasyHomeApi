@@ -47,7 +47,7 @@
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "Id").Value);
 
                 // attach user to context on successful jwt validation
-                context.Items["User"] = userService.GetById(userId).Result.Data;
+                context.Items["User"] = userService.getById(userId).Result.Data;
             }
             catch
             {

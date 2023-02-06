@@ -15,20 +15,20 @@ namespace Application.Controllers
         }
 
         [HttpPost("v1/immobiles/")]
-        public async Task<IActionResult> GetImmobiles([FromBody] FilterRequest filters)
+        public async Task<IActionResult> getImmobiles([FromBody] FilterRequest filters)
         {
             _stopwatch.Start();
-            var data = await _immobilesService.GetImmobiles(filters);
+            var data = await _immobilesService.getImmobiles(filters);
             return Json(new { data = data.Data });
 
         }
 
 
         [HttpPost("v1/immobiles/{id}")]
-        public async Task<IActionResult> GetImmobile([FromBody] FilterRequest filters)
+        public async Task<IActionResult> getImmobile([FromBody] FilterRequest filters)
         {
             _stopwatch.Start();
-            return FromResult(await _immobilesService.GetImmobiles(filters));
+            return FromResult(await _immobilesService.getImmobiles(filters));
 
         }
 

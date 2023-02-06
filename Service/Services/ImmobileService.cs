@@ -29,7 +29,7 @@ namespace Service.Services
             return;
         }
 
-        public async Task<Result<PaginatedListModel<ImmobileResponse>>> GetAllImmobiles(int pageNumber = 1)
+        public async Task<Result<PaginatedListModel<ImmobileResponse>>> getAllImmobiles(int pageNumber = 1)
         {
             var response = _immobileRepository.Select().Where(i => i.IsActive = true).ToList();
             List<ImmobileResponse> immobiles = new List<ImmobileResponse>();
@@ -72,7 +72,7 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<PaginatedListModel<ImmobileResponse>>> GetImmobiles(FilterRequest filters)
+        public async Task<Result<PaginatedListModel<ImmobileResponse>>> getImmobiles(FilterRequest filters)
         {
 
             var response = _immobileRepository.getByFilters(filters);

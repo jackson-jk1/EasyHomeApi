@@ -11,7 +11,7 @@ namespace Service.Interfaces
     public interface IImmobileService : IDisposable
     
     {
-        Task<Result<PaginatedListModel<ImmobileResponse>>> GetImmobiles(FilterRequest filters);
+        Task<Result<PaginatedListModel<ImmobileResponse>>> getImmobiles(FilterRequest filters);
 
         Task<Result<PaginatedListModel<ImmobileResponse>>> getImmobileByUser(HttpContext context, FilterRequest filters);
 

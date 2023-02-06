@@ -27,24 +27,28 @@ namespace Service.Services
 {
     public class UserService : IUserService
     {
+        [Obsolete]
         private readonly IHostingEnvironment _appEnvironment;
         private readonly IMapper _mapper;
         private readonly IUserRepository _baseRepository;
-
-        public UserService(IHostingEnvironment environment, IMapper mapper, IUserRepository baseRepository)
+        private readonly INotificationRepository _notificationRepository;
+        
+        [Obsolete]
+        public UserService(IHostingEnvironment environment, IMapper mapper, IUserRepository baseRepository, INotificationRepository notificationRepository)
         {
             _appEnvironment = environment;
             _mapper = mapper;
             _baseRepository = baseRepository;
+            _notificationRepository = notificationRepository;
         }
         public void Dispose()
         {
             return;
         }
 
-        public async Task<Result<LoginResponse>> Auth(LoginRequest user)
+        public async Task<Result<LoginResponse>> auth(LoginRequest user)
         {
-            var userJwt = _baseRepository.Auth(user.Email);
+            var userJwt = _baseRepository.auth(user.Email);
             if (userJwt == null)
             {
                 return new CustomResult<LoginResponse>(401)
@@ -69,7 +73,7 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<GenericResponse>> Register(UserRequest userreq)
+        public async Task<Result<GenericResponse>> register(UserRequest userreq)
         {
             
             string nomeUnicoArquivo = ImageHelper.UploadedFile(userreq.Image, _appEnvironment.WebRootPath);
@@ -102,7 +106,7 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<GenericResponse>> UpdatePassword(HttpContext context, PasswordRequest passreq)
+        public async Task<Result<GenericResponse>> updatePassword(HttpContext context, PasswordRequest passreq)
         {
             var u = _mapper.Map<UserModel>(context.Items["User"]);
             UserModel user = _baseRepository.Select(u.Id);
@@ -128,7 +132,7 @@ namespace Service.Services
 
         }
  
-        public async Task<Result<GenericResponse>> Update(HttpContext context, UserRequest userreq)
+        public async Task<Result<GenericResponse>> update(HttpContext context, UserRequest userreq)
         {
             var u = _mapper.Map<UserModel>(context.Items["User"]);
             UserModel user = _baseRepository.Select(u.Id);
@@ -168,9 +172,9 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<GenericResponse>> Recover(string email)
+        public async Task<Result<GenericResponse>> recover(string email)
         {
-            var userJwt = _baseRepository.Auth(email);
+            var userJwt = _baseRepository.auth(email);
             if (userJwt == null)
             {
                 return new CustomResult<GenericResponse>(401)
@@ -244,7 +248,7 @@ namespace Service.Services
             };
         }
 
-        public async Task<Result<UserResponse>> GetById(int id)
+        public async Task<Result<UserResponse>> getById(int id)
          {
             return new CustomResult<UserResponse>(200) {
                
@@ -284,7 +288,7 @@ namespace Service.Services
 
         }
 
-        public async Task<Result<UserResponse>> GetByToken(HttpContext context)
+        public async Task<Result<UserResponse>> getByToken(HttpContext context)
         {
             var user = _mapper.Map<UserModel>(context.Items["User"]);
 
@@ -392,97 +396,6 @@ namespace Service.Services
             }
 
         }
-
-        public async Task<Result<GenericResponse>> addNotification(HttpContext context, NotificationRequest not)
-        {
-            try
-            {
-                var u = _mapper.Map<UserModel>(context.Items["User"]);
-                UserModel contatado = _baseRepository.Select(not.UserId);
-                UserModel user = _baseRepository.Select(u.Id);
-                _baseRepository.deleteNotification(not.Id);
-                Notification notification = new Notification();
-                notification.Status = not.Status;
-                notification.Read = false;
-                notification.User = contatado;
-                notification.Contatando = user;
-                notification.Expires = DateTime.Now;
-                contatado.Notification.Add(notification);
-                _baseRepository.Update(contatado);
-                return new CustomResult<GenericResponse>(200)
-                {
-
-                    LogMessage = "",
-                    Data = new GenericResponse
-                    {
-                        Response = "",
-                        Statuscode = 200
-                    }
-
-                };
-            }
-            catch (Exception e)
-            {
-                return new CustomResult<GenericResponse>(200)
-                {
-
-                    LogMessage = "",
-                    Data = new GenericResponse
-                    {
-                        Response = "erro interno",
-                        Statuscode = 500
-                    }
-
-                };
-            }
-        }
-
-        public void readNotification(HttpContext context)
-        {
-            var user = _mapper.Map<UserModel>(context.Items["User"]);
-            _baseRepository.readNotification(user.Id);
-        }
-
-        public void deleteNotification(HttpContext context, int NotificationId)
-        {
-          
-            _baseRepository.deleteNotification(NotificationId);
-        }
-
-        public async Task<Result<List<NotificationResponse>>> listNotifications(HttpContext context)
-         {
-            var user = _mapper.Map<UserModel>(context.Items["User"]);
-
-            if (user == null)
-            {
-                return new CustomResult<List<NotificationResponse>>(401)
-                {
-
-                    LogMessage = "ok",
-                    Data = new List<NotificationResponse>()
-
-                };
-            }
-            var response = _baseRepository.getNotifications(user.Id);
-
-            List<NotificationResponse> notifications = new List<NotificationResponse>();
-            response.ForEach(u =>
-            {
-                var contatando = _baseRepository.Select(u.ContatandoId);
-                var contact = _mapper.Map<NotificationResponse>(u);
-                contact.Name = contatando.Name;
-                contact.UserId = contatando.Id;
-                notifications.Add(contact);
-            });
-            return new CustomResult<List<NotificationResponse>>(200)
-            {
-
-                LogMessage = "ok",
-                Data = notifications
-
-            };
-        }
-
         public async Task<Result<List<ContactResponse>>> listContacts(HttpContext context)
         {
             var user = _mapper.Map<UserModel>(context.Items["User"]);
@@ -513,87 +426,7 @@ namespace Service.Services
             };
 
         }
-        public async Task<Result<GenericResponse>> sendInvitation(HttpContext context, int id)
-        {
-            var u = _mapper.Map<UserModel>(context.Items["User"]);
-            UserModel contatado = _baseRepository.Select(id);
-            UserModel user = _baseRepository.Select(u.Id);
-
-            try
-            { 
-                Notification notification = new Notification();
-                notification.Status = 0;
-                notification.Read = false;
-                notification.User = contatado;
-                notification.Contatando = user;
-                notification.Expires = DateTime.Now;
-                contatado.Notification.Add(notification);
-                _baseRepository.Update(contatado);
-            }
-            catch (Exception e)
-            {
-
-                return new CustomResult<GenericResponse>(400)
-                {
-
-                    LogMessage = "ok",
-                    Data = new GenericResponse { Response = "Solicitação já enviada", Statuscode = 400 }
-
-
-                };
-            }
-            return new CustomResult<GenericResponse>(200)
-            {
-
-                LogMessage = "ok",
-                Data = new GenericResponse { Response = "Solicitação enviada com sucesso", Statuscode = 200 }
-
-
-            };
-
-         }
-
-        public async Task<Result<GenericResponse>> recuseInvitation(HttpContext context, int id, int notId)
-        {
-            var u = _mapper.Map<UserModel>(context.Items["User"]);
-            UserModel contatado = _baseRepository.Select(id);
-            UserModel user = _baseRepository.Select(u.Id);
-
-            try
-            {
-                Notification notification = new Notification();
-                notification.Status = 2;
-                notification.Read = false;
-                notification.User = contatado;
-                notification.Contatando = user;
-                notification.Expires = DateTime.Now;
-                contatado.Notification.Add(notification);
-                _baseRepository.Update(contatado);
-                _baseRepository.deleteNotification(notId);
-            }
-            catch (Exception e)
-            {
-
-                return new CustomResult<GenericResponse>(400)
-                {
-
-                    LogMessage = "ok",
-                    Data = new GenericResponse { Response = "Solicitação já enviada", Statuscode = 400 }
-
-
-                };
-            }
-            return new CustomResult<GenericResponse>(200)
-            {
-
-                LogMessage = "ok",
-                Data = new GenericResponse { Response = "Solicitação enviada com sucesso", Statuscode = 200 }
-
-
-            };
-
-        }
-
+     
         public async Task<Result<GenericResponse>> addContact(HttpContext context, int id, int notId)
         {
             var u = _mapper.Map<UserModel>(context.Items["User"]);
@@ -611,7 +444,7 @@ namespace Service.Services
                 notification.Expires = DateTime.Now;
                 contatado.Notification.Add(notification);
                 _baseRepository.Update(contatado);
-                _baseRepository.deleteNotification(notId);
+                _notificationRepository.deleteNotification(notId);
             }
             catch (Exception e)
             {
@@ -670,6 +503,25 @@ namespace Service.Services
 
         }
 
-      
+        public async Task<Result<GenericResponse>> getContact(HttpContext context, int idContact)
+        {
+            var user = _mapper.Map<UserModel>(context.Items["User"]);
+
+          
+                var result = _baseRepository.getContact(user.Id, idContact);
+                return new CustomResult<GenericResponse>(200)
+                {
+
+                    LogMessage = "",
+                    Data = new GenericResponse
+                    {
+                        Response = result.ToString(),
+                        Statuscode = 200
+                    }
+
+                };
+        }
+
+
     }
 }
