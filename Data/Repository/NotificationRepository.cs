@@ -13,9 +13,10 @@ namespace Data.Repository
         }
         
     
-        public string queryReadNotification = "update Notification set `Read` = 1 where UserId = ";
-        public string queryDeleteNotification = "delete from Notification where Id = ";
-        string queryVerifyNotification = "select * from Notification where UserId = @UserId and `Read` = false";
+        private string queryReadNotification = "update Notification set `Read` = 1 where UserId = ";
+        private string queryDeleteNotification = "delete from Notification where Id = ";
+        private string queryVerifyNotification = "select * from Notification where UserId = @UserId and `Read` = false LIMIT 1";
+        private string queryDuplicateNotification = "delete from Notification where UserId = {0} and ContatandoId = {1} and Status = {2}";
 
 
         public List<Notification> getNotifications(int userId)
@@ -41,6 +42,13 @@ namespace Data.Repository
              queryDeleteNotification = queryDeleteNotification + $"{notificationId}";
             _mySqlContext.Database.ExecuteSqlRaw(queryDeleteNotification);
             _mySqlContext.SaveChanges();
+        }
+
+        public void deleteDuplicateNotification(int userId, int contatandoId)
+        {
+            _mySqlContext.Database.ExecuteSqlRaw(queryDuplicateNotification, contatandoId, userId,0);
+            _mySqlContext.SaveChanges();
+
         }
 
         public bool verifyNotification(int userId)

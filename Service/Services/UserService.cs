@@ -432,6 +432,7 @@ namespace Service.Services
             var u = _mapper.Map<UserModel>(context.Items["User"]);
             UserModel contatado = _baseRepository.Select(id);
             UserModel user = _baseRepository.Select(u.Id);
+
           
             try
             {
@@ -445,6 +446,7 @@ namespace Service.Services
                 contatado.Notification.Add(notification);
                 _baseRepository.Update(contatado);
                 _notificationRepository.deleteNotification(notId);
+                _notificationRepository.deleteDuplicateNotification(user.Id,contatado.Id);
             }
             catch (Exception e)
             {
@@ -522,6 +524,29 @@ namespace Service.Services
                 };
         }
 
+        public async Task<Result<UserResponse>> getContactById(HttpContext httpContext, int contactId)
+        {
+            var user = _mapper.Map<UserModel>(httpContext.Items["User"]);
 
+
+            var result = _baseRepository.getContactById(user.Id, contactId);
+            if (result == null)
+            {
+                return new CustomResult<UserResponse>(200)
+                {
+
+                    LogMessage = "",
+                    Data = new UserResponse()
+
+                };
+            }
+            return new CustomResult<UserResponse>(200)
+            {
+
+                LogMessage = "",
+                Data = _mapper.Map<UserResponse>(result.Contact)
+         
+            };
+        }
     }
 }

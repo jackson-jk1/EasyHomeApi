@@ -6,6 +6,7 @@ using Domain.ViewModels.Response;
 using Domain.ViewModels.Response.Auth;
 using Domain.ViewModels.Response.Notificacoes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text;
 
 namespace Service.Interfaces
@@ -27,5 +28,6 @@ namespace Service.Interfaces
         Task<Result<GenericResponse>> removeContact(HttpContext context, int id);
         Task<Result<List<UserResponse>>> getUsersByImmobile(HttpContext context, int immId);
         Task<Result<GenericResponse>> getContact(HttpContext context, int idContact);
+        Task<Result<UserResponse>> getContactById(HttpContext httpContext, int contactId);
     }
 }

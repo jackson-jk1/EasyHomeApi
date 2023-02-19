@@ -88,7 +88,11 @@ namespace Data.Repository
             }
             return new List<UserModel>();
         }
-
+        public ContactsModel getContactById(int idUser, int idContact)
+        {
+            var ContactsModel = _mySqlContext.Set<ContactsModel>().Include(c => c.Contact).Where(c => c.UserId == idUser && c.ContactId == idContact).FirstOrDefault();
+            return ContactsModel;
+        }
         public bool getContact(int idUser, int idContact)
         {
              var ContactsModel = _mySqlContext.Set<ContactsModel>().Where(c => c.UserId == idUser && c.ContactId == idContact).FirstOrDefault();

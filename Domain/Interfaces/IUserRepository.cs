@@ -26,5 +26,7 @@ namespace Domain.Interfaces
 
         public UserModel getUserAndNotification(int userId, int NotificationId);
         public bool getContact(int id, int idContact);
+
+        public ContactsModel getContactById(int id, int idContact);
     }
 }

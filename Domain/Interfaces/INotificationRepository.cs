@@ -15,5 +15,7 @@ namespace Domain.Interfaces
 
         public List<Notification> getNotifications(int userId);
         bool verifyNotification(int id);
+
+        public void deleteDuplicateNotification(int userId, int contatandoId);
     }
 }

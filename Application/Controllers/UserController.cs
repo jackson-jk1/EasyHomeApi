@@ -95,7 +95,8 @@ namespace Application.Controllers
         public async Task<IActionResult> getContactById(int contactId)
         {
             _stopwatch.Start();
-            return FromResult(await _userService.getById(contactId));
+            var response = await _userService.getContactById(HttpContext, contactId);
+            return Json(new { data = response.Data });
 
         }
 
@@ -129,7 +130,6 @@ namespace Application.Controllers
             return Json(new { data = data.Data });
 
         }
-
 
 
         [HttpPut("v1/user/")]
