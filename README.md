@@ -25,7 +25,8 @@ Clone o repositório da API em sua máquina. Você pode fazer isso usando um cli
 ## Passo 3: Configurar a conexão com o banco de dados
 A API usa um banco de dados para armazenar e recuperar dados. Antes de executar a API, você precisa configurar a conexão com o banco de dados. Abra o arquivo appsettings.json na raiz do projeto e atualize as configurações de banco de dados com as informações da sua instância do banco de dados.
 
-ˋˋˋ "Database": {
+~~~json
+"Database": {
     "mysql": {
       "server": "<seu server>",
       "port": <sua porta>,
@@ -34,7 +35,7 @@ A API usa um banco de dados para armazenar e recuperar dados. Antes de executar 
       "password": "<>sua senha"
     } 
 }
-ˋˋˋ
+~~~
 
 ##  Instalando EasyHomeApi
 
