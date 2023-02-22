@@ -29,10 +29,10 @@ A API usa um banco de dados para armazenar e recuperar dados. Antes de executar 
 "Database": {
     "mysql": {
       "server": "<seu server>",
-      "port": <sua porta>,
+      "port": "<sua porta>",
       "database": "<seu banco>",
       "username": "<seu usuario>",
-      "password": "<>sua senha"
+      "password": "<sua senha>"
     } 
 }
 ~~~
@@ -81,5 +81,3 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
     </td>
   </tr>
 </table>
-
-[⬆ Voltar ao topo](#nome-do-projeto)<br>
