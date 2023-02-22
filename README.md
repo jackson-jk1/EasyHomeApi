@@ -67,7 +67,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       <a href="#">
         <img src="https://avatars.githubusercontent.com/u/56005941?s=400&u=0282b7888567a9f7f3df62df4433743a38289305&v=4" width="100px;" alt="Foto do Jackson"/><br>
         <sub>
-          <b>Jackson longo dos santos</b>
+          <b>Jackson Longo</b>
         </sub>
       </a>
     </td>
