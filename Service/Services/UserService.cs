@@ -6,22 +6,10 @@ using Domain.Utils.Result;
 using Domain.ViewModels.Request;
 using Domain.ViewModels.Response;
 using Domain.ViewModels.Response.Auth;
-using Domain.ViewModels.Response.Notificacoes;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SendGrid;
 using Service.Helpers;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Service.Services
 {

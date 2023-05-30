@@ -10,13 +10,12 @@ namespace Service.Services
 {
     public class FiltrosService : IFiltrosService
     {
-        private readonly IHostingEnvironment _appEnvironment;
         private readonly IMapper _mapper;
         private readonly IBaseRepository<PoloModel> _poloRepository;
 
-        public FiltrosService(IHostingEnvironment environment, IMapper mapper, IBaseRepository<PoloModel> poloRepository)
+        public FiltrosService(IMapper mapper, IBaseRepository<PoloModel> poloRepository)
         {
-            _appEnvironment = environment;
+        
             _mapper = mapper;
             _poloRepository = poloRepository;
         }

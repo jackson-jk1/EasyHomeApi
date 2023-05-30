@@ -16,7 +16,6 @@ namespace Service.Services
     {
         private readonly IMapper _mapper;
         private readonly IImmobileRepository _immobileRepository;
-        private readonly IBaseRepository<PoloModel> _poloRepository;
 
         public ImmobileService(IMapper mapper, IImmobileRepository immobileRepository, IBaseRepository<PoloModel> poloRepository)
         {
